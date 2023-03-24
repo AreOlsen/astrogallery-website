@@ -1,2 +1,0 @@
-# AstroGallery
- Astronomy forum & gallery.
