@@ -1,9 +1,10 @@
 <script>
-	import { onMount } from "svelte";
 	/* SERVER SIDE RENDER PRECHOOSE HERO IMAGE.*/
 	/** @type {import('./$types').PageData} */ export let data;
 
-	// Get all the posts.
+	// Get all the top 3 posts of all time.
+	// We dont want the screen to be bloated and too reactive on first entry.
+	//Therefore fetch instead of store.
 	async function retrievePosts() {
 		let response = await fetch(
 			"/api/getPostsStatic?" +

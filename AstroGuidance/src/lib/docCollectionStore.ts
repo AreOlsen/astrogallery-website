@@ -7,7 +7,6 @@ export function docStore<T>(firestore: Firestore, ref: string | DocumentReferenc
 
 	// Fallback for SSR
 	if (!firestore || !globalThis.window) {
-		console.warn("Firestore is not initialized or not in browser");
 		const { subscribe } = writable(startWith);
 		return {
 			subscribe,
@@ -42,7 +41,6 @@ export function collectionStore<T>(
 
 	// Fallback for SSR
 	if (!firestore || !globalThis.window) {
-		console.warn("Firestore is not initialized or not in browser");
 		const { subscribe } = writable(startWith);
 		return {
 			subscribe,

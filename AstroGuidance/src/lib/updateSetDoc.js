@@ -31,13 +31,13 @@ export const deleteFireStoreDocument = async (collection, docID) => {
 	}
 };
 
-export const uploadStorageImageGetURL = async (file, child) => {
+export const uploadStorageImageGetData = async (file, child) => {
 	try {
-		const storageRef = ref(storage, `${child}/${file.name}`);
-		await uploadBytes(storageRef, file).then(async (snapshot) => {
-			console.log("Uploaded image file");
-			return await getDownloadURL(snapshot.ref);
-		});
+		let uuid = crypto.randomUUID(); //Makes the file unique.
+		const storageRef = ref(storage, `${child}/${uuid}`);
+		const snapshot = await uploadBytes(storageRef, file);
+		const url = await getDownloadURL(snapshot.ref);
+		return { url: url.toString(), ref: storageRef };
 	} catch (error) {
 		console.log("Error uploading file:", error);
 	}

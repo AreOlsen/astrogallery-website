@@ -7,18 +7,10 @@
 	/* 
 		FIREBASE LOGIN & SIGNOUT.
 	*/
-	import {
-		signOut,
-		GoogleAuthProvider,
-		signInWithRedirect,
-		getAdditionalUserInfo,
-		getRedirectResult,
-	} from "firebase/auth";
-	import { auth, dbFireStore } from "../firebase.js";
+	import { signOut, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+	import { auth } from "../firebase.js";
 	import { userStore } from "$lib/authStore";
-
 	let user = userStore(auth);
-
 	const logout = async () => {
 		signOut(auth);
 	};
@@ -50,7 +42,7 @@
 			{#if $user}
 				<div class="dropdown dropdown-end">
 					<label tabindex="0" class="btn btn-ghost btn-circle avatar">
-						<div class="w-10 rounded-full">
+						<div class="w-1f0 rounded-full">
 							<img src={$user?.photoURL} alt="profile icon" />
 						</div>
 					</label>
