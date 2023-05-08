@@ -2,7 +2,7 @@
 	import { auth, dbFireStore, storage } from "../../../firebase.js";
 	import { userStore } from "$lib/authStore.ts";
 	import { docStore } from "$lib/docCollectionStore.ts";
-	import { uploadStorageImageGetData, updateFirestoreDocument } from "../../../lib/updateSetDoc.js";
+	import { uploadStorageImageGetData, updateFirestoreDocument } from "$lib/updateSetDoc.js";
 	import { updateProfile } from "firebase/auth";
 	import Post from "$lib/Post.svelte";
 	export let data;
@@ -194,10 +194,10 @@
 		{:else}
 			<div
 				class="grid"
-				style="grid-template-columns: repeat(auto-fill, minmax(15rem, 23rem)); grid-auto-rows:30rem;"
+				style="grid-template-columns: repeat(auto-fill, minmax(15rem, 23rem)); grid-auto-rows:35rem;"
 			>
 				{#each $profile?.posts as postID}
-					<Post {postID} onProfile={false} />
+					<Post {postID} onProfile={true} />
 				{/each}
 			</div>
 		{/if}

@@ -18,6 +18,34 @@
 	const loginWithGoogle = async () => {
 		signInWithRedirect(auth, new GoogleAuthProvider());
 	};
+
+	//EMAIL SUBSCRIPTION
+	import { updateFirestoreDocument } from "$lib/updateSetDoc.js";
+	import { docStore } from "$lib/docCollectionStore.ts";
+	import { dbFireStore } from "../firebase.js";
+	let subscribeNewsletterEmail;
+	let subscribedEmails = docStore(dbFireStore, "newsletter/subscribedEmails");
+	function subscribeToNewsletter() {
+		if ($subscribedEmails) {
+			if (
+				$subscribedEmails?.emails == undefined ||
+				($subscribedEmails?.emails == null && /[^@\s]+@[^@\s]+\.[^@\s]+/.test(subscribeNewsletterEmail))
+			) {
+				updateFirestoreDocument("newsletter", "subscribedEmails", {
+					emails: [subscribeNewsletterEmail],
+				});
+			} else {
+				if (
+					!$subscribedEmails?.emails.includes(subscribeNewsletterEmail) &&
+					/[^@\s]+@[^@\s]+\.[^@\s]+/.test(subscribeNewsletterEmail)
+				) {
+					updateFirestoreDocument("newsletter", "subscribedEmails", {
+						emails: [...$subscribedEmails?.emails, subscribeNewsletterEmail],
+					});
+				}
+			}
+		}
+	}
 </script>
 
 <header class="sticky top-0 z-50">
@@ -40,10 +68,11 @@
 			<a class="btn btn-ghost text-accent text-xl" href="/forum">FORUM</a>
 			<a class="btn btn-ghost text-accent text-xl" href="/aboutus">ABOUT US</a>
 			{#if $user}
+				<a class="btn btn-ghost text-accent text-xl" href="/newpost">NEW POST</a>
 				<div class="dropdown dropdown-end">
 					<label tabindex="0" class="btn btn-ghost btn-circle avatar">
-						<div class="w-1f0 rounded-full">
-							<img src={$user?.photoURL} alt="profile icon" />
+						<div class="rounded-full">
+							<img src={$user?.photoURL} alt="Profile icon" />
 						</div>
 					</label>
 					<ul
@@ -86,7 +115,7 @@
 	</div>
 	<div>
 		<span class="footer-title">Newsletter</span>
-		<form class="form-control w-80" action="/api/registerEmail" method="post">
+		<div class="form-control w-80">
 			<label class="label" for="email">
 				<span class="label-text">Enter your email address</span>
 			</label>
@@ -97,10 +126,16 @@
 					name="email"
 					placeholder="username@site.com"
 					class="input input-bordered w-full pr-16"
+					bind:value={subscribeNewsletterEmail}
 				/>
-				<button class="btn btn-accent absolute top-0 right-0 rounded-l-none">Subscribe</button>
+				<button
+					class="btn btn-accent absolute top-0 right-0 rounded-l-none"
+					on:click={() => {
+						subscribeToNewsletter();
+					}}>Subscribe</button
+				>
 			</div>
-		</form>
+		</div>
 	</div>
 </footer>
 

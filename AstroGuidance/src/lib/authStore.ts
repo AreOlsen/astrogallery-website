@@ -19,10 +19,6 @@ export function userStore(auth: Auth) {
 						contact: `${user?.email}`,
 						photoURL: `${user?.photoURL}`,
 						posts: [],
-						newsletter: {
-							subscribed: false,
-							newsletterEmail: `${user?.email}`,
-						},
 					});
 				}
 			}

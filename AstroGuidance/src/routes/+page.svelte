@@ -63,11 +63,19 @@
 					<div class="card w-96 bg-base-300 rounded-2xl shadow-xl relative" style="min-height:35rem">
 						<div class="card-body flex flex-col justify-between gap-4">
 							<h2 class="card-title font-bold text-3xl">{post.data.title}</h2>
-							<img
-								src={post.data.imageSRC}
-								alt={post.data.description}
-								class="h-72 w-full rounded-lg bg-base-200"
-							/>
+							{#if post.data.elements[0].filetype == "image"}
+								<img
+									src={post.data.elements[0].url}
+									alt={post.data.description}
+									class="h-72 w-full rounded-lg bg-base-200"
+								/>
+							{:else if post.data.imageVideo.filetype == "video"}
+								<video
+									src={post.data.elements[0].url}
+									class="h-72 w-full rounded-lg bg-base-200"
+									controls
+								/>
+							{/if}
 							<div class="flex flex-col gap-2">
 								<span text-xl>
 									{post.data.description.slice(0, 50)}{#if post.data.description.Length > 50}...{/if}
