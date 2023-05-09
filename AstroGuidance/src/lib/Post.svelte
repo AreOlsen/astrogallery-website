@@ -101,7 +101,7 @@
 
 <input type="checkbox" id="postMODAL" class="modal-toggle" />
 <div class="modal">
-	<div class="modal-box w-11/12 max-w-5xl relative p-7 pb-20 flex flex-col gap-6">
+	<div class="modal-box max-w-5xl relative p-7 pb-20 flex flex-col gap-6">
 		<label for="postMODAL" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
 		<h3 class="text-5xl text-center font-bold">{$postData?.title}</h3>
 		<div class="flex flex-row gap-4 justify-evenly">
