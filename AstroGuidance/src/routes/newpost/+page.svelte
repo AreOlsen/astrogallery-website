@@ -1,12 +1,50 @@
 <script>
 	import MediaGallery from "$lib/MediaGallery.svelte";
-
-	function generateElementArray() {}
-
+	import { auth, dbFireStore } from "../../firebase";
+	import { userStore } from "$lib/authStore.ts";
+	import { docStore } from "$lib/docCollectionStore.ts";
+	import { setFirestoreDocument, uploadStorageImageGetData, updateFirestoreDocument } from "$lib/updateSetDoc.js";
+	let user = userStore(auth);
+	let userData;
+	if ($user) {
+		userData = docStore(`profiles/${$user?.uid}`);
+	}
 	let title;
 	let description;
 	let files;
 	let filesTitles = [];
+
+	async function createPost() {
+		/*
+			Create the post. 
+		*/
+		let postID = crypto.randomUUID();
+		let filesData = [];
+		if (typeof files != "undefined" || typeof files != "null") {
+			for (let i = 0; i < files.length; i++) {
+				let dataBack = await uploadStorageImageGetData(files[i], "postsImages");
+				filesData[i] = {
+					filetype: files[i].type.match("image.*") ? "image" : "video",
+					url: dataBack.url,
+					title: filesTitles[i],
+				};
+			}
+		}
+
+		let data = {
+			comments: [],
+			title: title,
+			description: description,
+			totalLikes: 1,
+			likesUsers: [`${$user?.uid}`],
+			popularity: 1,
+			authorID: $user?.uid,
+			id: postID,
+			elements: filesData,
+		};
+		await setFirestoreDocument("posts", `${postID}`, data);
+		await updateFirestoreDocument("profiles", `${$user?.uid}`, { posts: [`${postID}`] });
+	}
 </script>
 
 <main class="flex flex-col w-full lg:flex-row justify-center items-center p-6">
@@ -97,6 +135,6 @@
 				</div>
 			{/if}
 		</div>
-		<button class="btn btn-primary">UPLOAD POST</button>
+		<button class="btn btn-primary" on:click={createPost}>UPLOAD POST</button>
 	</div>
 </main>

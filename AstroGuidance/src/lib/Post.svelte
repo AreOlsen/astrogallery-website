@@ -4,7 +4,7 @@
 	import { docStore } from "$lib/docCollectionStore.ts";
 	import { dbFireStore, auth } from ".././firebase";
 	import { userStore } from "$lib/authStore.ts";
-	import { updateFirestoreDocument } from "$lib/updateSetDoc.js";
+	import { updateFirestoreDocument, deleteFireStoreDocument } from "$lib/updateSetDoc.js";
 	import Comment from "$lib/Comment.svelte";
 	import MediaGallery from "./MediaGallery.svelte";
 	let user = userStore(auth);
@@ -32,6 +32,22 @@
 					popularity: $postData?.popularity - 1,
 					likesUsers: temp,
 				});
+			}
+		}
+	}
+
+	function deletePost() {
+		if ($user && $user?.uid == $postData?.authorID) {
+			//Delete post document.
+			deleteFireStoreDocument("posts", `${postID}`);
+			//Update author published posts.
+			if ($authorData && $postData) {
+				let temp = $authorData;
+				var index = temp.posts.indexOf($postData?.id);
+				if (index !== -1) {
+					temp.posts.splice(index, 1);
+				}
+				updateFirestoreDocument("posts", `${postID}`, temp);
 			}
 		}
 	}
@@ -71,7 +87,7 @@
 </script>
 
 <article class="bg-base-300 flex flex-col items-center gap-2 rounded-lg shadow-2xl text-center relative p-10 py-4">
-	<h1 class="font-bold text-4xl">{$postData?.title.slice(0, 25)}</h1>
+	<h1 class="font-bold text-4xl break-words max-w-full">{$postData?.title.slice(0, 25)}</h1>
 	{#if $postData?.elements[0].filetype == "image" && $postData?.elements[0].url.length != 0}
 		<img
 			src={$postData?.elements[0].url}
@@ -81,7 +97,7 @@
 	{:else if $postData?.elements[0].filetype == "video" && $postData?.elements[0].url.length != 0}
 		<video src={$postData?.elements[0].url} class="rounded-lg border-accent shadow-xl h-[55%] w-[100%]" controls />
 	{/if}
-	<p>{$postData?.description.slice(0, 50)}</p>
+	<p class="break-words max-w-full">{$postData?.description.slice(0, 50)}</p>
 	<button
 		class="btn bg-base-300 rounded-lg flex flex-row gap-2 absolute right-5 bottom-5 {likedPost == true
 			? 'bg-primary text-white'
@@ -176,6 +192,16 @@
 						height="50px"
 					/><span>{$authorData?.username}</span></a
 				>
+			{/if}
+			{#if $postData?.authorID == $user?.uid}
+				<button
+					class="btn bg-base-300 rounded-lg bg-primary hover:bg-error text-white}"
+					on:click={() => {
+						deletePost();
+					}}
+				>
+					<span class="font-bold text-xl">DELETE POST</span>
+				</button>
 			{/if}
 			<button
 				class="btn bg-base-300 rounded-lg {likedPost == true ? 'bg-primary text-white' : ''}"
