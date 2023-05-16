@@ -1,18 +1,29 @@
 <script>
 	import MediaGallery from "$lib/MediaGallery.svelte";
+	import { goto } from "$app/navigation";
 	import { auth, dbFireStore } from "../../firebase";
 	import { userStore } from "$lib/authStore.ts";
 	import { docStore } from "$lib/docCollectionStore.ts";
 	import { setFirestoreDocument, uploadStorageImageGetData, updateFirestoreDocument } from "$lib/updateSetDoc.js";
 	let user = userStore(auth);
-	let userData;
-	if ($user) {
-		userData = docStore(`profiles/${$user?.uid}`);
-	}
+	let userData = docStore(dbFireStore, `profiles/${$user?.uid}`);
 	let title;
 	let description;
 	let files;
 	let filesTitles = [];
+	let fileObjects = [];
+
+	//Load local images for preview.
+	//Function to handle file selection
+	function handleFileSelection(event) {
+		// Update the files array with selected files
+		files = Array.from(event.target.files);
+		fileObjects = Array.from(files).map((file, index) => ({
+			url: URL.createObjectURL(file),
+			filetype: file.type.includes("image/") ? "image" : "video",
+			title: filesTitles[index],
+		}));
+	}
 
 	async function createPost() {
 		/*
@@ -20,14 +31,18 @@
 		*/
 		let postID = crypto.randomUUID();
 		let filesData = [];
-		if (typeof files != "undefined" || typeof files != "null") {
-			for (let i = 0; i < files.length; i++) {
-				let dataBack = await uploadStorageImageGetData(files[i], "postsImages");
-				filesData[i] = {
-					filetype: files[i].type.match("image.*") ? "image" : "video",
-					url: dataBack.url,
-					title: filesTitles[i],
-				};
+		if (files) {
+			if (files.length !== 0) {
+				console.log("Uploading files.");
+				for (let i = 0; i < files.length; i++) {
+					let dataBack = await uploadStorageImageGetData(files[i], "postsImages");
+					filesData[i] = {
+						filetype: files[i].type.match("image.*") ? "image" : "video",
+						url: dataBack.url,
+						title: filesTitles[i],
+					};
+				}
+				console.log("Uploaded files.");
 			}
 		}
 
@@ -42,16 +57,29 @@
 			id: postID,
 			elements: filesData,
 		};
+		console.log("Setting doc.");
 		await setFirestoreDocument("posts", `${postID}`, data);
-		await updateFirestoreDocument("profiles", `${$user?.uid}`, { posts: [`${postID}`] });
+		console.log("Updating doc.");
+		if (typeof $userData?.posts == "undefined" || typeof $userData?.posts == "null") {
+			await updateFirestoreDocument("profiles", `${$user?.uid}`, { posts: [`${postID}`] });
+		} else {
+			await updateFirestoreDocument("profiles", `${$user?.uid}`, {
+				posts: [...$userData?.posts, `${postID}`],
+			});
+		}
+		goto(`/forum/post/${postID}`);
 	}
 </script>
 
 <main class="flex flex-col w-full lg:flex-row justify-center items-center p-6">
 	<div class="w-1/2 flex flex-col justify-center items-center gap-10 bg-base-300 p-6 rounded-box">
 		<h2 class="text-4xl font-bold">Preview Media.</h2>
-		<div class="w-1/2 aspect-square border-primary border-2 rounded-3xl p-4 bg-black">
-			<MediaGallery elements={[{ url: "/CompanyLogo/Logo.png", filetype: "image", title: "Hello" }]} />
+		<div class="carousel rounded-lg border-primary border-2 shadow-xl aspect-square max-w-[66%] bg-black">
+			{#if !files}
+				<MediaGallery elements={[{ url: "/CompanyLogo/Logo.png", filetype: "image", title: "Company Logo" }]} />
+			{:else}
+				<MediaGallery elements={fileObjects} />
+			{/if}
 		</div>
 	</div>
 	<div class="divider lg:divider-horizontal" />
@@ -80,11 +108,12 @@
 		<div>
 			<label for="elements" class="btn btn-primary">UPLOAD ELEMENTS</label>
 			<input
-				accept=".jpg, .jpeg, .png, .gif, video/mp4, video/x-m4v, video/*"
+				accept=".jpg, .jpeg, .png, .gif, .mp4, .x-m4v, video/*"
 				id="elements"
 				class="hidden"
 				type="file"
 				multiple
+				on:change={handleFileSelection}
 				bind:files
 			/>
 		</div>
@@ -118,7 +147,6 @@
 									</div>
 								</div>
 							</div>
-							<figure><img src="" alt="" class="rounded-full" /></figure>
 							<div class="card-body">
 								<label for={`file${i}`}>Choose Media Description</label>
 								<input
@@ -126,7 +154,7 @@
 									id={`file${i}`}
 									name={`file${i}`}
 									bind:value={filesTitles[i]}
-									placeholder="Media Description"
+									placeholder={files[i].name}
 									class="input input-primary"
 								/>
 							</div>

@@ -60,30 +60,33 @@
 				<h2 class="text-xl font-bold italic my-20">Loading trending posts...</h2>
 			{:then posts}
 				{#each posts as post, i}
-					<div class="card w-96 bg-base-300 rounded-2xl shadow-xl relative" style="min-height:35rem">
-						<div class="card-body flex flex-col justify-between gap-4">
-							<h2 class="card-title font-bold text-3xl">{post.data.title}</h2>
-							{#if post.data.elements[0].filetype == "image"}
-								<img
-									src={post.data.elements[0].url}
-									alt={post.data.description}
-									class="h-72 w-full rounded-lg bg-base-200"
-								/>
-							{:else if post.data.imageVideo.filetype == "video"}
-								<video
-									src={post.data.elements[0].url}
-									class="h-72 w-full rounded-lg bg-base-200"
-									controls
-								/>
+					<div class="card w-96 bg-base-300 rounded-2xl shadow-xl relative h-[35rem]">
+						<div class="card-body flex flex-col justify-between gap-4 text-center">
+							<h2 class="card-title font-bold text-3xl truncate h-8">
+								{post.data.title.slice(0, 20)}{#if post.data.title.length > 20}...{/if}
+							</h2>
+							{#if post.data.elements}
+								{#if post.data.elements.length !== 0}
+									{#if post.data.elements[0].filetype == "image"}
+										<img
+											src={post.data.elements[0].url}
+											alt={post.data.description}
+											class="h-72 w-full rounded-lg bg-base-200"
+										/>
+									{:else if post.data.imageVideo.filetype == "video"}
+										<video
+											src={post.data.elements[0].url}
+											class="h-72 w-full rounded-lg bg-base-200"
+											controls
+										/>
+									{/if}
+								{/if}
 							{/if}
-							<div class="flex flex-col gap-2">
-								<span text-xl>
-									{post.data.description.slice(0, 50)}{#if post.data.description.Length > 50}...{/if}
-								</span>
-
-								<div class="card-actions">
-									<a class="btn btn-accent" href="/forum/{post.id}">Go to post.</a>
-								</div>
+							<span class="text-xl">
+								{post.data.description.slice(0, 50)}{#if post.data.description.Length > 50}...{/if}
+							</span>
+							<div class="card-actions">
+								<a class="btn btn-accent" href="/forum/{post.id}">Go to post.</a>
 							</div>
 							<div class="badge badge-lg absolute bottom-5 right-5 p-4 flex flex-row gap-2">
 								<img src="Icons/heart.svg" alt="Heart icon" />

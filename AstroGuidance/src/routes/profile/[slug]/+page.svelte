@@ -6,10 +6,8 @@
 	import { updateProfile } from "firebase/auth";
 	import Post from "$lib/Post.svelte";
 	export let data;
-
 	let user = userStore(auth);
 	let profile = docStore(dbFireStore, `profiles/${data.slug}`);
-
 	let editingProfile = false;
 
 	//For previewing the new profile image.
@@ -192,11 +190,8 @@
 				<h2 class="text-2xl font-bold">No posts published by user.</h2>
 			</div>
 		{:else}
-			<div
-				class="grid"
-				style="grid-template-columns: repeat(auto-fill, minmax(15rem, 23rem)); grid-auto-rows:35rem;"
-			>
-				{#each $profile?.posts as postID}
+			<div class="grid auto-rows-[35rem] gap-4" style="grid-template-columns: repeat(auto-fill, 23rem);">
+				{#each $profile?.posts as postID, index (postID + index)}
 					<Post {postID} onProfile={true} />
 				{/each}
 			</div>

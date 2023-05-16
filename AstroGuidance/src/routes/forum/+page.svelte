@@ -6,12 +6,15 @@
 </script>
 
 <main class="flex flex-col gap-4 text-center">
-	<div class="flex flex-row justify-evenly items-center border-b-accent-focus border-b-[1px] py-6">
+	<div class="border-b-accent-focus border-b-[1px] py-6">
 		<h2 class="text-6xl font-bold">Forum</h2>
 	</div>
 	{#if $posts}
-		<div class="m-6 w-full min-h-full grid auto-cols-[25rem] gap-6 auto-rows-[40rem]">
-			{#each $posts as post}
+		<div
+			class="m-6 min-h-full grid gap-6 auto-rows-[35rem]"
+			style="grid-template-columns: repeat(auto-fill, 23rem);"
+		>
+			{#each $posts as post (post.id)}
 				<Post onProfile={false} postID={post.id} />
 			{/each}
 		</div>

@@ -6,9 +6,18 @@ Har ein stad der ein kan bla nedover og sjå på bileter, eller sjå på mangen 
 
 Bruk "npm install" for å installere alle dependencies og "npm run dev" for å starte nettstaden.
 
+Data og informasjon som poster eller kommentarer er lagret på ein firestore dataserver og ein firebase storage dataserver.
+
 Kjelder:
 
 -   TailwindCSS
+-   DaisyUI
 -   Firebase
-    -   Google Analytics
     -   Firestore
+    -   Storage
+-   Unsplash
+    -   Bileter
+-   Svgrepo
+    -   Ikoner
+-   Pexels
+    -   Bileter

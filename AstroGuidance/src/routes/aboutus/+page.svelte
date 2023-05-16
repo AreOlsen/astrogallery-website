@@ -1,6 +1,6 @@
 <main class="flex flex-col gap-2 justify-center items-center">
 	<div
-		class="flex flex-col gap-1 justify-center items-center min-h-screen box-content w-full bg-[url('/AboutUsBackground/outerspace.jpg')] bg-center bg-cover"
+		class="flex flex-col gap-1 justify-center items-center min-h-screen box-content w-full bg-[url('/AboutUsBackground/moon.jpg')] bg-center bg-cover"
 	>
 		<div class="prose lg:prose-xl">
 			<h1>
