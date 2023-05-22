@@ -70,7 +70,7 @@
 											alt={post.data.description}
 											class="h-72 w-full rounded-lg bg-base-200"
 										/>
-									{:else if post.data.imageVideo.filetype == "video"}
+									{:else if post.data.elements[0].filetype == "video"}
 										<video
 											src={post.data.elements[0].url}
 											class="h-72 w-full rounded-lg bg-base-200"
