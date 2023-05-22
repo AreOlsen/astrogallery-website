@@ -83,7 +83,7 @@
 								{post.data.description.slice(0, 50)}{#if post.data.description.Length > 50}...{/if}
 							</span>
 							<div class="card-actions">
-								<a class="btn btn-accent" href="/forum/{post.id}">Go to post.</a>
+								<a class="btn btn-accent" href="/forum/post/{post.id}">Go to post.</a>
 							</div>
 							<div class="badge badge-lg absolute bottom-5 right-5 p-4 flex flex-row gap-2">
 								<img src="Icons/heart.svg" alt="Heart icon" />
