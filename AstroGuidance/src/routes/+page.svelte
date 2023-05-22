@@ -20,7 +20,7 @@
 	<!-- HERO OF MAIN PAGE. -->
 	<div
 		class="hero min-h-screen bg-cover bg-center relative"
-		style="background-image:url('HomeBackground/Hero/{data.images.heroImage}.jpg')"
+		style="background-image:url('/HomeBackground/Hero/{data.images.heroImage}.jpg')"
 	>
 		<div class="hero-overlay bg-opacity-40" />
 		<div class="hero-content flex-col lg:flex-row gap-8 items-center justify-start w-full">
