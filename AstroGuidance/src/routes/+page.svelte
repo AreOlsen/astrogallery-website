@@ -4,7 +4,7 @@
 
 	// Get all the top 3 posts of all time.
 	// We dont want the screen to be bloated and too reactive on first entry.
-	//Therefore fetch instead of store.
+	// Therefore fetch instead of store.
 	async function retrievePosts() {
 		let response = await fetch(
 			"/api/getPostsStatic?" +
@@ -33,16 +33,13 @@
 			<img src="CompanyLogo/Logo.png" class="rounded-lg" width="200px" height="200px" alt="AstroGuidance logo." />
 		</div>
 		<!-- Wave. -->
-		<div class="absolute bottom-0 left-0 w-full overflow-hidden rotate-180" style="line-height:0">
+		<div class="absolute bottom-0 left-0 w-full overflow-hidden rotate-180 leading-[0rem]">
 			<svg
 				data-name="Layer 1"
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 1200 120"
 				preserveAspectRatio="none"
-				class="relative block"
-				style="
-					width: calc(164% + 1.3px);
-					height: 154px;"
+				class="relative block h-[154px] w-[calc(164%+1.3px)]"
 			>
 				<path
 					d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
@@ -90,7 +87,7 @@
 							</div>
 							<div class="badge badge-lg absolute bottom-5 right-5 p-4 flex flex-row gap-2">
 								<img src="Icons/heart.svg" alt="Heart icon" />
-								<span style="color:hsl(var(--bc))">{post.data.totalLikes}</span>
+								<span class="text-[hsl(var(--bc))]">{post.data.totalLikes}</span>
 							</div>
 						</div>
 					</div>
@@ -136,15 +133,13 @@
 	</div>
 	<!-- SOCIALS.-->
 	<div
-		class="w-full flex flex-col gap-4 justify-center items-center bg-cover bg-center"
-		style="background-image:url('HomeBackground/Backgrounds/Nebula.jpg')"
+		class="w-full flex flex-col gap-4 justify-center items-center bg-cover bg-center bg-[url('HomeBackground/Backgrounds/Nebula.jpg')]"
 	>
 		<!-- WAVE ABOVE SOCIALS. -->
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 1440 320"
-			height="200px"
-			class="relative block w-full"
+			class="relative block w-full h-[200px]"
 			preserveAspectRatio="none"
 		>
 			<path

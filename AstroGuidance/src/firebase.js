@@ -2,6 +2,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { initializeApp } from "firebase/app";
+// Firebase config, connecting to the servers.
 const firebaseConfig = {
 	apiKey: "AIzaSyCDnS2BOg57WiAjXaOfk0HUFOpI-DboGlo",
 	authDomain: "astronomi-e7378.firebaseapp.com",

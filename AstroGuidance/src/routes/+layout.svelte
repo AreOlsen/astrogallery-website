@@ -26,15 +26,17 @@
 	let subscribeNewsletterEmail;
 	let subscribedEmails = docStore(dbFireStore, "newsletter/subscribedEmails");
 	function subscribeToNewsletter() {
+		//If first subscription we cannot use $subscribedEmails?.emails, so we just set it.
 		if ($subscribedEmails) {
 			if (
-				$subscribedEmails?.emails == undefined ||
-				($subscribedEmails?.emails == null && /[^@\s]+@[^@\s]+\.[^@\s]+/.test(subscribeNewsletterEmail))
+				($subscribedEmails?.emails == undefined || $subscribedEmails?.emails == null) &&
+				/[^@\s]+@[^@\s]+\.[^@\s]+/.test(subscribeNewsletterEmail)
 			) {
 				updateFirestoreDocument("newsletter", "subscribedEmails", {
 					emails: [subscribeNewsletterEmail],
 				});
 			} else {
+				//If not first subscription we use $subscribedEmails?.emails.
 				if (
 					!$subscribedEmails?.emails.includes(subscribeNewsletterEmail) &&
 					/[^@\s]+@[^@\s]+\.[^@\s]+/.test(subscribeNewsletterEmail)
