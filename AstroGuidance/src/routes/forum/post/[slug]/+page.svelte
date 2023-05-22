@@ -96,7 +96,7 @@
 		{#if $postData?.elements}
 			{#if $postData?.elements.length !== 0}
 				<div class="carousel rounded-lg shadow-xl aspect-square max-h-[50vh] bg-black">
-					<MediaGallery elements={$postData?.elements} />
+					<MediaGallery elements={$postData?.elements} postID={data.slug} />
 				</div>
 			{/if}
 		{/if}
