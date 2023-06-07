@@ -2,10 +2,9 @@
 	import { docStore } from "$lib/docCollectionStore.ts";
 	import { dbFireStore, auth } from "../../../../firebase";
 	import { userStore } from "$lib/authStore.ts";
-	import { updateFirestoreDocument, deleteFireStoreDocument } from "$lib/updateSetDoc.js";
-	import { goto } from "$app/navigation";
 	import Comment from "$lib/Comment.svelte";
 	import MediaGallery from "$lib/MediaGallery.svelte";
+	import { postComment, deletePost, likePost } from "$lib/postHandling.js";
 
 	export let data;
 
@@ -14,85 +13,14 @@
 	$: authorData = docStore(dbFireStore, `profiles/${$postData?.authorID}`);
 	$: likedPost = $postData?.likesUsers.includes($user?.uid.toString());
 
-	function likePost() {
-		if ($user) {
-			if (!likedPost) {
-				//Like
-				updateFirestoreDocument("posts", `${data.slug}`, {
-					totalLikes: $postData?.totalLikes + 1,
-					popularity: $postData?.popularity + 1,
-					likesUsers: [...$postData?.likesUsers, $user?.uid],
-				});
-			} else {
-				//Remove like
-				const index = $postData?.likesUsers.indexOf(`${$user?.uid}`);
-				let temp = $postData?.likesUsers;
-				if (index > -1) {
-					temp.splice(index, 1);
-				}
-				updateFirestoreDocument("posts", `${data.slug}`, {
-					totalLikes: $postData?.totalLikes - 1,
-					popularity: $postData?.popularity - 1,
-					likesUsers: temp,
-				});
-			}
-		}
-	}
-
-	function deletePost() {
-		if ($user && $user?.uid == $postData?.authorID) {
-			//Delete post document.
-			deleteFireStoreDocument("posts", `${data.slug}`);
-			//Update author published posts.
-			if ($authorData && $postData) {
-				let temp = $authorData;
-				var index = temp.posts.indexOf($postData?.id);
-				if (index !== -1) {
-					temp.posts.splice(index, 1);
-				}
-				updateFirestoreDocument("profiles", `${$user?.uid}`, temp);
-			}
-			goto("/forum/");
-		}
-	}
-
 	let postCommentData;
-
-	function postComment() {
-		if ($user) {
-			//Post a comment.
-			if ($postData?.comments != null || $postData?.comments != undefined) {
-				updateFirestoreDocument("posts", `${data.slug}`, {
-					comments: [
-						...$postData?.comments,
-						{
-							commentAuthorID: $user?.uid,
-							commentData: postCommentData,
-							commentTime: Date.now(),
-						},
-					],
-				});
-			} else {
-				//Post the first comment. (Cannot use postData.comments if is undefined)
-				updateFirestoreDocument("posts", `${data.slug}`, {
-					comments: [
-						{
-							commentAuthorID: $user?.uid,
-							commentData: postCommentData,
-							commentTime: Date.now(),
-						},
-					],
-				});
-			}
-		} else {
-			console.log("Needs to sign in to comment.");
-		}
-	}
 </script>
 
+<!-- THIS IS THE SITE VERSION OF THE MODAL-BASED POST CARDS. -->
 <main class="p-20 py-12 flex flex-col gap-8">
 	<h3 class="text-5xl text-center font-bold">{$postData?.title}</h3>
 	<div class="flex flex-row gap-4 justify-evenly grow">
+		<!--Post Elements. -->
 		{#if $postData?.elements}
 			{#if $postData?.elements.length !== 0}
 				<div class="carousel rounded-lg shadow-xl aspect-square max-h-[50vh] bg-black">
@@ -100,6 +28,7 @@
 				</div>
 			{/if}
 		{/if}
+		<!--Description of post.-->
 		<div class="flex flex-col text-center">
 			<h3 class="text-2xl font-bold">Description:</h3>
 			<section>
@@ -107,22 +36,25 @@
 			</section>
 		</div>
 	</div>
+	<!--COMMENTS-->
 	<div class="grid grid-cols-{$user ? 2 : 1} grid-rows-1 gap-10 w-full">
 		<div class="flex flex-col gap-2">
 			<h3 class="text-2xl font-bold text-center">Comments:</h3>
 			{#if $postData}
 				<section class="p-4 rounded-lg bg-neutral max-h-[30vh] overflow-scroll flex-1 flex flex-col gap-3">
+					<!--IF NO COMMENTS -->
 					{#if $postData?.comments == undefined || $postData?.comments == null}
 						<span class="font-bold text-xl">No comments posted.</span>
 					{:else if $postData?.comments.length == 0}
 						<!-- Has to be checked afterwards because we cannot read length of undefined.-->
 						<span class="font-bold text-xl">No comments posted.</span>
+						<!-- IF COMMENTS EXIST. -->
 					{:else}
-						{#each $postData?.comments.sort((a, b) => b.commentTime - a.commentTime) as comment, i}
+						{#each $postData?.comments.sort((a, b) => b.commentTime - a.commentTime) as curComment (data.slug + curComment.commentAuthorID + curComment.commentTime)}
 							<Comment
-								commentAuthorID={comment.commentAuthorID}
-								commentData={comment.commentData}
-								commentTime={comment.commentTime}
+								commentAuthorID={curComment.commentAuthorID}
+								commentData={curComment.commentData}
+								commentTime={curComment.commentTime}
 								{postData}
 								postID={data.slug}
 							/>
@@ -131,6 +63,7 @@
 				</section>
 			{/if}
 		</div>
+		<!-- POST NEW COMMENT-->
 		{#if $user}
 			<div class="flex flex-col gap-2 text-center">
 				<label for="publishComment" class="text-2xl font-bold">Post Comment:</label>
@@ -147,7 +80,7 @@
 					<button
 						class="btn btn-accent"
 						on:click={() => {
-							postComment();
+							postComment($user, $postData, data.slug, postCommentData);
 						}}>Upload</button
 					>
 				</div>
@@ -155,7 +88,9 @@
 		{/if}
 	</div>
 
+	<!--POST DETAILS AND STATISTICS-->
 	<div class="flex flex-row justify-evenly items-center">
+		<!--AUTHOR OF POST-->
 		<a
 			href="/profile/{$postData?.authorID}"
 			class="p-1 btn-ghost flex flex-row gap-3 justify-center items-center rounded-md"
@@ -169,24 +104,26 @@
 				height="50px"
 			/><span>{$authorData?.username}</span></a
 		>
+		<!--DELETE POST BUTTON IF AUTHOR-->
 		{#if $postData?.authorID == $user?.uid}
 			<button
 				class="btn bg-base-300 rounded-lg bg-primary hover:bg-error text-white"
 				on:click={() => {
-					deletePost();
+					deletePost($user, data.slug, $postData, $authorData, true);
 				}}
 			>
 				<span class="font-bold text-xl">DELETE POST</span>
 			</button>
 		{/if}
+		<!--LIKE BUTTON-->
 		<button
 			class="btn bg-base-300 rounded-lg hover:bg-success {likedPost == true ? 'bg-primary text-white' : ''}"
 			on:click={() => {
-				likePost();
+				likePost(data.slug, $postData, $user);
 			}}
 		>
 			<img src="/Icons/heart.svg" width="24px" height="24px" alt="Like icon" />
-			<span class="font-bold text-xl">{$postData?.totalLikes}</span>
+			<span class="font-bold text-xl text-white">{$postData?.totalLikes}</span>
 		</button>
 	</div>
 </main>

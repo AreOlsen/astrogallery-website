@@ -9,6 +9,7 @@
 	<div class="border-b-accent-focus border-b-[1px] py-6">
 		<h2 class="text-6xl font-bold">Forum</h2>
 	</div>
+	<!-- IF POSTS EXIST-->
 	{#if $posts}
 		<div
 			class="m-6 min-h-full grid gap-6 auto-rows-[35rem]"
@@ -19,6 +20,7 @@
 			{/each}
 		</div>
 	{:else}
+		<!--IF NO POSTS-->
 		<div class="h-full flex justify-center items-center">
 			<h2 class="text-4xl font-bold">Loading posts...</h2>
 		</div>

@@ -24,7 +24,10 @@
 			}
 		});
 		//Update to remove the comment.
-		await updateFirestoreDocument("posts", `${postID}`, { comments: comments_temp });
+		await updateFirestoreDocument("posts", `${postID}`, {
+			comments: comments_temp,
+			popularity: $postData?.popularity - 2,
+		});
 	}
 </script>
 

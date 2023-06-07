@@ -7,10 +7,9 @@
 	import { setFirestoreDocument, uploadStorageImageGetData, updateFirestoreDocument } from "$lib/updateSetDoc.js";
 	let user = userStore(auth);
 	let userData = docStore(dbFireStore, `profiles/${$user?.uid}`);
-	let title;
-	let description;
+	let title = "";
+	let description = "";
 	let files;
-	let filesTitles = [];
 	let fileObjects = [];
 
 	//Load local images for preview.
@@ -21,7 +20,7 @@
 		fileObjects = Array.from(files).map((file, index) => ({
 			url: URL.createObjectURL(file),
 			filetype: file.type.includes("image/") ? "image" : "video",
-			title: filesTitles[index],
+			title: "",
 		}));
 	}
 
@@ -31,6 +30,10 @@
 		*/
 		let postID = crypto.randomUUID();
 		let filesData = [];
+
+		/*
+			UPLOAD ALL POST ELEMENTS.
+		*/
 		if (files) {
 			if (files.length !== 0) {
 				console.log("Uploading files.");
@@ -39,13 +42,14 @@
 					filesData[i] = {
 						filetype: files[i].type.match("image.*") ? "image" : "video",
 						url: dataBack.url,
-						title: filesTitles[i],
+						title: fileObjects[i].title,
 					};
 				}
 				console.log("Uploaded files.");
 			}
 		}
 
+		/* POST DATA */
 		let data = {
 			comments: [],
 			title: title,
@@ -57,16 +61,20 @@
 			id: postID,
 			elements: filesData,
 		};
-		console.log("Setting doc.");
+		console.log("Publishing post.");
 		await setFirestoreDocument("posts", `${postID}`, data);
-		console.log("Updating doc.");
+		//We update the author's data such that the post and the author is directly linked.
+		console.log("Updating author doc.");
 		if (typeof $userData?.posts == "undefined" || typeof $userData?.posts == "null") {
+			//If first post by author.
 			await updateFirestoreDocument("profiles", `${$user?.uid}`, { posts: [`${postID}`] });
 		} else {
+			//If not first post by author.
 			await updateFirestoreDocument("profiles", `${$user?.uid}`, {
 				posts: [...$userData?.posts, `${postID}`],
 			});
 		}
+		//Reroute the user to the post.
 		goto(`/forum/post/${postID}`);
 	}
 </script>
@@ -76,9 +84,12 @@
 		<h2 class="text-4xl font-bold">Preview Media.</h2>
 		<div class="carousel rounded-lg border-primary border-2 shadow-xl aspect-square max-w-[66%] bg-black">
 			{#if !files}
-				<MediaGallery elements={[{ url: "/CompanyLogo/Logo.png", filetype: "image", title: "Company Logo" }]} />
+				<MediaGallery
+					elements={[{ url: "/CompanyLogo/Logo.png", filetype: "image", title: "Company Logo" }]}
+					postID={"newpost"}
+				/>
 			{:else}
-				<MediaGallery elements={fileObjects} />
+				<MediaGallery elements={fileObjects} postID={"newpost"} />
 			{/if}
 		</div>
 	</div>
@@ -117,52 +128,50 @@
 				bind:files
 			/>
 		</div>
-		<div>
-			{#if files}
-				<div class="grid grid-cols-{files.length > 1 ? 2 : 1} auto-rows-[10rem] gap-2">
-					{#each files as element, i}
-						<section class="card lg:card-side bg-base-100 shadow-xl relative">
-							<div class="dropdown dropdown-end absolute top-2 right-2">
-								<label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										class="w-4 h-4 stroke-current"
-										><path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="3"
-											d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-										/></svg
-									>
-								</label>
-								<div
-									tabindex="0"
-									class="card compact dropdown-content shadow bg-base-100 rounded-box w-64 border-primary border-[1px]"
+		{#if files}
+			<div class="flex flex-wrap flex-row gap-2 justify-center items-center">
+				{#each files as element, i}
+					<section class="card lg:card-side bg-base-100 shadow-xl relative">
+						<div class="dropdown dropdown-end absolute top-2 right-2">
+							<label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									class="w-4 h-4 stroke-current"
+									><path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="3"
+										d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+									/></svg
 								>
-									<div class="card-body">
-										<h2 class="card-title">What is this?</h2>
-										<p>We require a description for universal design!</p>
-									</div>
+							</label>
+							<div
+								tabindex="0"
+								class="card compact dropdown-content shadow bg-base-100 rounded-box w-64 border-primary border-[1px]"
+							>
+								<div class="card-body">
+									<h2 class="card-title">What is this?</h2>
+									<p>We require a description for universal design!</p>
 								</div>
 							</div>
-							<div class="card-body">
-								<label for={`file${i}`}>Choose Media Description</label>
-								<input
-									type="text"
-									id={`file${i}`}
-									name={`file${i}`}
-									bind:value={filesTitles[i]}
-									placeholder={files[i].name}
-									class="input input-primary"
-								/>
-							</div>
-						</section>
-					{/each}
-				</div>
-			{/if}
-		</div>
+						</div>
+						<div class="card-body">
+							<label for={`file${i}`}>Choose Media Description</label>
+							<input
+								type="text"
+								id={`file${i}`}
+								name={`file${i}`}
+								bind:value={fileObjects[i].title}
+								placeholder={files[i].name}
+								class="input input-primary"
+							/>
+						</div>
+					</section>
+				{/each}
+			</div>
+		{/if}
 		<button class="btn btn-primary" on:click={createPost}>UPLOAD POST</button>
 	</div>
 </main>

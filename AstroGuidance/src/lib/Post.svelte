@@ -4,86 +4,15 @@
 	import { docStore } from "$lib/docCollectionStore.ts";
 	import { dbFireStore, auth } from ".././firebase";
 	import { userStore } from "$lib/authStore.ts";
-	import { updateFirestoreDocument, deleteFireStoreDocument } from "$lib/updateSetDoc.js";
+	import { deletePost, postComment, likePost } from "$lib/postHandling.js";
 	import Comment from "$lib/Comment.svelte";
 	import MediaGallery from "$lib/MediaGallery.svelte";
 	let user = userStore(auth);
 	export let postData = docStore(dbFireStore, `posts/${postID}`);
 	$: authorData = docStore(dbFireStore, `profiles/${$postData?.authorID}`);
 	$: likedPost = $postData?.likesUsers.includes($user?.uid.toString());
-	function likePost() {
-		if ($user) {
-			if (!likedPost) {
-				//Like
-				updateFirestoreDocument("posts", `${postID}`, {
-					totalLikes: $postData?.totalLikes + 1,
-					popularity: $postData?.popularity + 1,
-					likesUsers: [...$postData?.likesUsers, $user?.uid],
-				});
-			} else {
-				//Remove like
-				const index = $postData?.likesUsers.indexOf(`${$user?.uid}`);
-				let temp = $postData?.likesUsers;
-				if (index > -1) {
-					temp.splice(index, 1);
-				}
-				updateFirestoreDocument("posts", `${postID}`, {
-					totalLikes: $postData?.totalLikes - 1,
-					popularity: $postData?.popularity - 1,
-					likesUsers: temp,
-				});
-			}
-		}
-	}
 
-	function deletePost() {
-		if ($user && $user?.uid == $postData?.authorID) {
-			//Delete post document.
-			deleteFireStoreDocument("posts", `${postID}`);
-			//Update author published posts.
-			if ($authorData && $postData) {
-				let temp = $authorData;
-				var index = temp.posts.indexOf($postData?.id);
-				if (index !== -1) {
-					temp.posts.splice(index, 1);
-				}
-				updateFirestoreDocument("profiles", `${$user?.uid}`, temp);
-			}
-		}
-	}
-
-	let postCommentData;
-
-	function postComment() {
-		if ($user) {
-			//Post a comment.
-			if ($postData?.comments != null || $postData?.comments != undefined) {
-				updateFirestoreDocument("posts", `${postID}`, {
-					comments: [
-						...$postData?.comments,
-						{
-							commentAuthorID: $user?.uid,
-							commentData: postCommentData,
-							commentTime: Date.now(),
-						},
-					],
-				});
-			} else {
-				//Post the first comment. (Cannot use postData.comments if is undefined)
-				updateFirestoreDocument("posts", `${postID}`, {
-					comments: [
-						{
-							commentAuthorID: $user?.uid,
-							commentData: postCommentData,
-							commentTime: Date.now(),
-						},
-					],
-				});
-			}
-		} else {
-			console.log("Needs to sign in to comment.");
-		}
-	}
+	let postCommentData = "";
 </script>
 
 <article
@@ -101,7 +30,7 @@
 			{:else if $postData?.elements[0].filetype == "video" && $postData?.elements[0].url.length != 0}
 				<video
 					src={$postData?.elements[0].url}
-					class="rounded-lg border-accent shadow-xl h-[55%] w-[100%]"
+					class="rounded-lg border-accent shadow-xl h-[55%] w-[100%] bg-black"
 					controls
 				/>
 			{/if}
@@ -114,11 +43,11 @@
 			? 'bg-primary text-white'
 			: ''}"
 		on:click={() => {
-			likePost();
+			likePost(postID, $postData, $user);
 		}}
 	>
 		<img src="/Icons/heart.svg" width="24px" height="24px" alt="Like icon" />
-		<span class="font-bold text-xl">{$postData?.totalLikes}</span>
+		<span class="font-bold text-xl text-white">{$postData?.totalLikes}</span>
 	</button>
 	<!-- The button to open post MODAL.  -->
 	<label for="{postID}modal" class="btn btn-accent absolute left-5 bottom-5">More details.</label>
@@ -157,11 +86,11 @@
 							<!-- Has to be checked afterwards because we cannot read length of undefined.-->
 							<span class="font-bold text-xl">No comments posted.</span>
 						{:else}
-							{#each $postData?.comments.sort((a, b) => b.commentTime - a.commentTime) as comment, i}
+							{#each $postData?.comments.sort((a, b) => b.commentTime - a.commentTime) as curComment (postID + curComment.commentAuthorID + curComment.commentTime)}
 								<Comment
-									commentAuthorID={comment.commentAuthorID}
-									commentData={comment.commentData}
-									commentTime={comment.commentTime}
+									commentAuthorID={curComment.commentAuthorID}
+									commentData={curComment.commentData}
+									commentTime={curComment.commentTime}
 									{postData}
 									{postID}
 								/>
@@ -186,7 +115,7 @@
 						<button
 							class="btn btn-accent"
 							on:click={() => {
-								postComment();
+								postComment($user, $postData, postID, postCommentData);
 							}}>Upload</button
 						>
 					</div>
@@ -214,7 +143,7 @@
 				<button
 					class="btn bg-base-300 rounded-lg bg-primary hover:bg-error text-white"
 					on:click={() => {
-						deletePost();
+						deletePost($user, postID, $postData, $authorData, false);
 					}}
 				>
 					<span class="font-bold text-xl">DELETE POST</span>
@@ -223,11 +152,11 @@
 			<button
 				class="btn bg-base-300 rounded-lg hover:bg-success {likedPost == true ? 'bg-primary text-white' : ''}"
 				on:click={() => {
-					likePost();
+					likePost(postID, $postData, $user);
 				}}
 			>
 				<img src="/Icons/heart.svg" width="24px" height="24px" alt="Like icon" />
-				<span class="font-bold text-xl">{$postData?.totalLikes}</span>
+				<span class="font-bold text-xl text-white">{$postData?.totalLikes}</span>
 			</button>
 		</div>
 	</div>

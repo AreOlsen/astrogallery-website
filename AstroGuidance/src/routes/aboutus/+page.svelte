@@ -1,5 +1,5 @@
 <main class="flex flex-col gap-2 justify-center items-center">
-	<div
+	<section
 		class="flex flex-col gap-1 justify-center items-center min-h-screen box-content w-full bg-[url('/AboutUsBackground/moon.jpg')] bg-center bg-cover"
 	>
 		<div class="prose lg:prose-xl">
@@ -17,8 +17,11 @@
 			<img src="/Icons/arrowDownwards.svg" alt="Downwards arrow" width="24px" height="24px" />
 			<span>Learn More</span>
 		</a>
-	</div>
-	<div id="section_1" class="flex flex-row flex-wrap gap-2 justify-evenly items-center min-h-[75vh] box-content p-4">
+	</section>
+	<section
+		id="section_1"
+		class="flex flex-row flex-wrap gap-2 justify-evenly items-center min-h-[75vh] box-content p-4"
+	>
 		<div class="prose lg:prose-xl">
 			<h2>Who are we?</h2>
 			<p>
@@ -31,8 +34,8 @@
 			</p>
 		</div>
 		<img src="/AboutUsBackground/developers.jpg" class="w-1/4 rounded-md" alt="The forum developers." />
-	</div>
-	<div
+	</section>
+	<section
 		id="section_2"
 		class="flex flex-row flex-wrap gap-2 justify-evenly items-center min-h-[75vh] box-content p-4 bg-base-200"
 	>
@@ -46,8 +49,11 @@
 				wonders of the universe.
 			</p>
 		</div>
-	</div>
-	<div id="section_3" class="flex flex-row flex-wrap gap-2 justify-evenly items-center min-h-[75vh] box-content p-4">
+	</section>
+	<section
+		id="section_3"
+		class="flex flex-row flex-wrap gap-2 justify-evenly items-center min-h-[75vh] box-content p-4"
+	>
 		<div class="prose lg:prose-xl">
 			<h2>Social events and community activities.</h2>
 			<p>
@@ -60,5 +66,5 @@
 			</p>
 		</div>
 		<img src="/AboutUsBackground/event.jpg" class="w-1/4 rounded-md" alt="Latest event we had, stargazing." />
-	</div>
+	</section>
 </main>

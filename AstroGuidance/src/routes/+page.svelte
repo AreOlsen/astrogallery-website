@@ -2,9 +2,7 @@
 	/* SERVER SIDE RENDER PRECHOOSE HERO IMAGE.*/
 	/** @type {import('./$types').PageData} */ export let data;
 
-	// Get all the top 3 posts of all time.
-	// We dont want the screen to be bloated and too reactive on first entry.
-	// Therefore fetch instead of store.
+	// Get the top 3 posts and render them, this uses fetch and is not dynamic for change.
 	async function retrievePosts() {
 		let response = await fetch(
 			"/api/getPostsStatic?" +
@@ -32,7 +30,7 @@
 			</div>
 			<img src="CompanyLogo/Logo.png" class="rounded-lg" width="200px" height="200px" alt="AstroGuidance logo." />
 		</div>
-		<!-- Wave. -->
+		<!-- Wave on the bottom of hero.-->
 		<div class="absolute bottom-0 left-0 w-full overflow-hidden rotate-180 leading-[0rem]">
 			<svg
 				data-name="Layer 1"
@@ -48,13 +46,15 @@
 			</svg>
 		</div>
 	</div>
-	<!-- TRENDING POSTS.-->
+	<!-- TRENDING POSTS - DIFFERENT TYPE OF POST CARD THAN "Post.svelte" COMPONENT. .-->
 	<div class="w-full flex flex-col gap-10 justify-center items-center p-10">
 		<h2 class="font-bold text-5xl">Trending Posts.</h2>
 		<!-- POSTS.-->
 		<div class="flex items-center justify-center gap-20 flex-wrap">
+			<!--while loading posts-->
 			{#await retrievePosts()}
 				<h2 class="text-xl font-bold italic my-20">Loading trending posts...</h2>
+				<!-- When retrieved posts we render each post as a div.-->
 			{:then posts}
 				{#each posts as post, i}
 					<div class="card w-96 bg-base-300 rounded-2xl shadow-xl relative h-[35rem]">
@@ -62,8 +62,10 @@
 							<h2 class="card-title font-bold text-3xl truncate h-8">
 								{post.data.title.slice(0, 20)}{#if post.data.title.length > 20}...{/if}
 							</h2>
+							<!-- If we have an image or video for the post.-->
 							{#if post.data.elements}
 								{#if post.data.elements.length !== 0}
+									<!-- Is it an image or video?-->
 									{#if post.data.elements[0].filetype == "image"}
 										<img
 											src={post.data.elements[0].url}
@@ -73,15 +75,17 @@
 									{:else if post.data.elements[0].filetype == "video"}
 										<video
 											src={post.data.elements[0].url}
-											class="h-72 w-full rounded-lg bg-base-200"
+											class="h-72 w-full rounded-lg bg-black"
 											controls
 										/>
 									{/if}
 								{/if}
 							{/if}
+							<!--The description of the post.-->
 							<span class="text-xl">
 								{post.data.description.slice(0, 50)}{#if post.data.description.Length > 50}...{/if}
 							</span>
+							<!--Statistics and misc. of post.-->
 							<div class="card-actions">
 								<a class="btn btn-accent" href="/forum/post/{post.id}">Go to post.</a>
 							</div>
@@ -98,6 +102,7 @@
 	<!-- ABOUT US.-->
 	<div class="w-full gap-10 flex flex-col justify-center items-center bg-base-200 p-10 py-20">
 		<h2 class="font-bold text-4xl">About AstroGuidance.</h2>
+		<!-- A list of different rectangles which shows information about the site.-->
 		<div class="gap-16 flex items-center justify-center gap-20 flex-wrap">
 			<div class="card bg-base-100 w-full sm:w-96 shadow-xl">
 				<div class="card-body items-center text-center">
@@ -152,12 +157,15 @@
 		<div class="py-20 gap-4 justify-center items-center flex flex-col">
 			<h2 class="text-4xl font-bold">Follow the stars.</h2>
 			<nav class="flex flex-row gap-4">
+				<!--Instagram social link-->
 				<a href="https://www.instagram.com" class="p-4">
 					<img src="Socials/instagram.svg" alt="Instagram logo." />
 				</a>
+				<!--Youtube social link-->
 				<a href="https://www.youtube.com" class="p-4">
 					<img src="Socials/youtube.svg" alt="Youtube logo." />
 				</a>
+				<!--Twitter social link-->
 				<a href="https://twitter.com/" class="p-4">
 					<img src="Socials/twitter.svg" alt="Twitter logo." />
 				</a>
