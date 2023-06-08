@@ -36,7 +36,7 @@
 
 <!--HEADER-->
 <header class="sticky top-0 z-50">
-	<div class="navbar bg-base-100 flex-row flex gap-2" style="border-bottom:3px solid hsl(var(--a))">
+	<div class="navbar bg-base-100 flex-row flex gap-2 border-b-accent border-b-[3px]">
 		<!--WEBSITE LOGO AND MAIN PAGE BUTTOn. -->
 		<div class="flex-1">
 			<a class="btn btn-ghost flex flex-row gap-2" href="/">
