@@ -11,28 +11,30 @@
 	let user = userStore(auth);
 	let commentAuthorData = docStore(dbFireStore, `profiles/${commentAuthorID}`);
 	async function deleteComment() {
-		//Remove the specific comment in mind.
-		let comments_temp = [];
-		$postData?.comments.forEach((object) => {
-			console.log(object);
-			if (
-				object.commentAuthorID !== commentAuthorID ||
-				object.commentData !== commentData ||
-				object.commentTime !== commentTime
-			) {
-				comments_temp.push(object);
-			}
-		});
-		//Update to remove the comment.
-		await updateFirestoreDocument("posts", `${postID}`, {
-			comments: comments_temp,
-			popularity: $postData?.popularity - 2,
-		});
+		if ($user?.uid == commentAuthorID) {
+			//Remove the specific comment in mind.
+			let comments_temp = [];
+			$postData?.comments.forEach((object) => {
+				console.log(object);
+				if (
+					object.commentAuthorID !== commentAuthorID ||
+					object.commentData !== commentData ||
+					object.commentTime !== commentTime
+				) {
+					comments_temp.push(object);
+				}
+			});
+			//Update to remove the comment.
+			await updateFirestoreDocument("posts", `${postID}`, {
+				comments: comments_temp,
+				popularity: $postData?.popularity - 2,
+			});
+		}
 	}
 </script>
 
 <div class="rounded-md p-3 bg-base-300 break-words relative">
-	<!--If own comment => Allows for deletion. -->
+	<!--If own comment or admin => Allows for deletion. -->
 	{#if $user?.uid == commentAuthorID}
 		<div class="flex flex-row justify-between items-center border-b-primary border-b-2 py-1">
 			<button

@@ -32,7 +32,7 @@
 		let filesData = [];
 
 		/*
-			UPLOAD ALL POST ELEMENTS.
+			UPLOAD ALL POST ELEMENTS (VIDEO & IMAGES).
 		*/
 		if (files) {
 			if (files.length !== 0) {
@@ -66,10 +66,10 @@
 		//We update the author's data such that the post and the author is directly linked.
 		console.log("Updating author doc.");
 		if (typeof $userData?.posts == "undefined" || typeof $userData?.posts == "null") {
-			//If first post by author.
+			//If first post by author the posts field may be undefined, we define it.
 			await updateFirestoreDocument("profiles", `${$user?.uid}`, { posts: [`${postID}`] });
 		} else {
-			//If not first post by author.
+			//If not first post by author then we just add onto it.
 			await updateFirestoreDocument("profiles", `${$user?.uid}`, {
 				posts: [...$userData?.posts, `${postID}`],
 			});

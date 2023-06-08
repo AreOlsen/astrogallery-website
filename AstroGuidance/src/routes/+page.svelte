@@ -25,7 +25,7 @@
 			<div class="flex flex-col">
 				<h1 class="font-bold text-7xl italic">AstroGuidance</h1>
 				<span class="text-accent italic text-3xl">The forum for astronomers.</span>
-				<span class="opacity-50 italic">Funded & Hosted by SpaceX</span>
+				<span class="italic">Funded & Hosted by SpaceX</span>
 				<a href="/forum" class="btn btn-accent my-6">To The Forum.</a>
 			</div>
 			<img src="CompanyLogo/Logo.png" class="rounded-lg" width="200px" height="200px" alt="AstroGuidance logo." />
@@ -46,9 +46,9 @@
 			</svg>
 		</div>
 	</div>
-	<!-- TRENDING POSTS - DIFFERENT TYPE OF POST CARD THAN "Post.svelte" COMPONENT. .-->
+	<!-- TOP POSTS - DIFFERENT TYPE OF POST CARD THAN "Post.svelte" COMPONENT. .-->
 	<div class="w-full flex flex-col gap-10 justify-center items-center p-10">
-		<h2 class="font-bold text-5xl">Trending Posts.</h2>
+		<h2 class="font-bold text-5xl">Top Posts.</h2>
 		<!-- POSTS.-->
 		<div class="flex items-center justify-center gap-20 flex-wrap">
 			<!--while loading posts-->

@@ -29,11 +29,14 @@
 	import { dbFireStore } from "../firebase.js";
 	let subscribeNewsletterEmail;
 	let subscribedEmails = docStore(dbFireStore, "newsletter/subscribedEmails");
+
+	//SEARCH
+	import Search from "$lib/Search.svelte";
 </script>
 
 <!--HEADER-->
 <header class="sticky top-0 z-50">
-	<div class="navbar bg-base-100" style="border-bottom:3px solid hsl(var(--a))">
+	<div class="navbar bg-base-100 flex-row flex gap-2" style="border-bottom:3px solid hsl(var(--a))">
 		<!--WEBSITE LOGO AND MAIN PAGE BUTTOn. -->
 		<div class="flex-1">
 			<a class="btn btn-ghost flex flex-row gap-2" href="/">
@@ -42,48 +45,39 @@
 			>
 		</div>
 		<!-- SEARCH. -->
-		<div class="flex-none gap-2">
-			<div class="form-control">
-				<div class="input-group">
-					<input type="text" placeholder="Search…" class="input input-bordered" />
-					<button class="btn btn-square">
-						<img src="/Icons/search.svg" alt="Search icon" width="24px" height="24px" />
-					</button>
-				</div>
+		<Search />
+		<!-- FORUM BUTTON -->
+		<a class="btn btn-ghost text-accent text-xl" href="/forum">FORUM</a>
+		<!-- ABOUT US BUTTON -->
+		<a class="btn btn-ghost text-accent text-xl" href="/aboutus">ABOUT US</a>
+		<!-- IF LOGGED IN  -->
+		{#if $user}
+			<!-- IF LOGGED IN => NEW POST BUTTON-->
+			<a class="btn btn-ghost text-accent text-xl" href="/newpost">NEW POST</a>
+			<!-- IF LOGGED IN => USER DETAILS. -->
+			<div class="dropdown dropdown-end">
+				<!-- BUTTON DESIGN -->
+				<label tabindex="0" class="btn btn-ghost btn-circle avatar">
+					<div class="rounded-full">
+						<img src={$user?.photoURL} alt="Profile icon" />
+					</div>
+				</label>
+				<ul
+					tabindex="0"
+					class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
+				>
+					<!-- GO TO PROFILE BUTTON -->
+					<li>
+						<a class="justify-between" href="/profile/{$user?.uid}"> Profile </a>
+					</li>
+					<!-- LOG OUT BUTTON -->
+					<li><button on:click={() => logout()}>Logout</button></li>
+				</ul>
 			</div>
-			<!-- FORUM BUTTON -->
-			<a class="btn btn-ghost text-accent text-xl" href="/forum">FORUM</a>
-			<!-- ABOUT US BUTTON -->
-			<a class="btn btn-ghost text-accent text-xl" href="/aboutus">ABOUT US</a>
-			<!-- IF LOGGED IN  -->
-			{#if $user}
-				<!-- IF LOGGED IN => NEW POST BUTTON-->
-				<a class="btn btn-ghost text-accent text-xl" href="/newpost">NEW POST</a>
-				<!-- IF LOGGED IN => USER DETAILS. -->
-				<div class="dropdown dropdown-end">
-					<!-- BUTTON DESIGN -->
-					<label tabindex="0" class="btn btn-ghost btn-circle avatar">
-						<div class="rounded-full">
-							<img src={$user?.photoURL} alt="Profile icon" />
-						</div>
-					</label>
-					<ul
-						tabindex="0"
-						class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
-					>
-						<!-- GO TO PROFILE BUTTON -->
-						<li>
-							<a class="justify-between" href="/profile/{$user?.uid}"> Profile </a>
-						</li>
-						<!-- LOG OUT BUTTON -->
-						<li><button on:click={() => logout()}>Logout</button></li>
-					</ul>
-				</div>
-			{:else}
-				<!-- LOG IN BUTTON IF NOT LOGGED IN ALREADY-->
-				<button class="btn btn-ghost text-accent text-xl" on:click={() => loginWithGoogle()}>LOG IN</button>
-			{/if}
-		</div>
+		{:else}
+			<!-- LOG IN BUTTON IF NOT LOGGED IN ALREADY-->
+			<button class="btn btn-ghost text-accent text-xl" on:click={() => loginWithGoogle()}>LOG IN</button>
+		{/if}
 	</div>
 </header>
 
@@ -91,15 +85,15 @@
 <slot />
 
 <!--FOOTER-->
-<footer class="footer p-10 bg-base-200 text-base-content">
+<footer class="footer p-10 bg-base-200 text-base-content overflow-hidden">
 	<!-- FOOTER WEBSITE INFORMATION-->
 	<div>
 		<img src="/CompanyLogo/Logo.png" width="50px" alt="AstroGuidance Logo" />
 
 		<h2 class="font-bold text-xl">AstroGuidance.</h2>
 		<br />
-		<h3 class="italic text-m text-accent">The forum for Astronomers.</h3>
-		<h4 class="opacity-50 italic">Hosted & Funded by SpaceX</h4>
+		<h3 class="italic text-accent text-base">The forum for Astronomers.</h3>
+		<h4 class="opacity-80 text-sm italic text-accent">Hosted & Funded by SpaceX</h4>
 	</div>
 	<!--FOOTER NAVIGATION LINKS-->
 	<div>
@@ -148,7 +142,7 @@
 <title> AstroGuidance </title>
 
 <!-- NOTIFICATION ALERT. -->
-<div class="alert alert-info {$currentNotification?.show ? '' : 'hidden'} fixed z-[1000] bottom-5 right-5 w-1/3">
+<div class="alert alert-info {$currentNotification?.show ? '' : 'hidden'} fixed bottom-5 right-5 w-1/3">
 	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"
 		><path
 			stroke-linecap="round"
