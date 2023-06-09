@@ -14,7 +14,12 @@
 
 <form class="w-64">
 	<div class="form-control relative w-full">
-		<input type="text" class="input input-bordered w-full" placeholder="Search…" bind:value={searchQuery} />
+		<input
+			type="text"
+			class="input input-bordered w-full border-accent"
+			placeholder="Search…"
+			bind:value={searchQuery}
+		/>
 		{#if searchResults.length > 0 && searchQuery.length > 0}
 			<div
 				class="w-full shadow bg-base-100 rounded-box p-2 rounded flex flex-col gap-2 absolute top-14 box-content overflow-y-auto max-h-48"
@@ -22,7 +27,7 @@
 				{#each searchResults as result (result.id)}
 					<a
 						href="/forum/post/{result.id}"
-						class="block btn rounded-md p-2 shadow-xl flex justify-center items-center w-64"
+						class="block btn border-accent border-[1px] rounded-md p-2 shadow-xl flex justify-center items-center w-64"
 						>{result.title}</a
 					>
 				{/each}
