@@ -148,6 +148,8 @@
 					bind:value={initEditData.biography}
 				/>
 			{/if}
+		</div>
+		<div class="flex flex-col gap-2">
 			<!--CONTACT TEXT WITH CONTACT ICON-->
 			<div class="flex flex-row gap-2 items-center justify-center">
 				<img src="../Icons/contact.svg" height="24px" width="24px" alt="Contact icon" />
