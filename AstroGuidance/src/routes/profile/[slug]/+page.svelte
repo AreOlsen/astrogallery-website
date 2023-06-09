@@ -51,7 +51,7 @@
 	}
 </script>
 
-<main class="grid gap-10 grid-rows-1 w-full min-h-screen p-10" style="grid-template-columns:3fr 9fr;">
+<main class="grid gap-10 grid-rows-1 w-full min-h-screen p-10 md:grid-cols-[3fr_9fr] grid-cols[1fr]">
 	<!--* THIS IS THE USER DETAILS SIDE. -->
 	<!--* Check if own profile. If own -> we allow edits to profile data -->
 	<div
@@ -66,8 +66,7 @@
 					<img
 						src={$profile?.photoURL}
 						alt="User profile pic"
-						class="rounded-full w-1/2 aspect-square"
-						style="border:4px solid hsl(var(--a))"
+						class="rounded-full w-1/2 aspect-square border-[4px] border-accent"
 					/>
 					<h2 class="text-2xl font-bold">{$profile?.username}</h2>
 					<span class="text-xl italic">{$profile?.status}</span>
@@ -76,8 +75,7 @@
 					<img
 						src="/CompanyLogo/Logo.png"
 						alt="Default profile pic"
-						class="rounded-full w-1/2 aspect-square"
-						style="border:4px solid hsl(var(--a))"
+						class="rounded-full w-1/2 aspect-square border-[4px] border-accent"
 					/>
 					<h2 class="text-2xl font-bold">User does not exist.</h2>
 					<span class="text-xl italic">🛑 Please select a correct user!</span>
@@ -90,8 +88,7 @@
 							src={$profile?.photoURL}
 							alt="New profile pic"
 							bind:this={profileIMG}
-							class="rounded-full w-1/2 aspect-square"
-							style="border:4px solid hsl(var(--a))"
+							class="rounded-full w-1/2 aspect-square border-[4px] border-accent"
 						/>
 						<div>
 							<label for="newProfilePic" class="btn btn-accent">Select Image</label>
