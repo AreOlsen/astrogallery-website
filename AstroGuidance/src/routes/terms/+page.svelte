@@ -1,5 +1,6 @@
 <main class="flex flex-col justify-center items-center w-full">
 	<article class="prose lg:prose-xl text-center my-10">
+		<!-- PAGE INFO. -->
 		<div class="flex flex-row justify-center items-center gap-3">
 			<h1 style="margin:0rem !important">Terms and Conditions</h1>
 			<img src="/CompanyLogo/Logo.png" width="150px" height="150px" alt="Company logo" class="align-middle" />

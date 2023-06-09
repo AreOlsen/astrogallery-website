@@ -10,7 +10,7 @@
 	let profile = docStore(dbFireStore, `profiles/${data.slug}`);
 	let editingProfile = false;
 
-	//For previewing the new profile image.
+	//PREVIEW NEW PROFILE PICTURE.
 	let profileIMG;
 	let profileIMGUPLOAD;
 	$: if (profileIMGUPLOAD) {
@@ -21,22 +21,26 @@
 		fileReader.readAsDataURL(profileIMGUPLOAD[0]);
 	}
 
+	//START VALUES OF USER INFORMATION TO EDIT.
 	let initEditData;
-	//Updating the user profile.
+
+	//UPDATE USER INFORMATION.
 	async function updateThisProfile() {
+		//IF UPLOADED NEW PROFILE PICTURE.
 		if (typeof profileIMGUPLOAD != "undefined") {
 			if (profileIMGUPLOAD[0]) {
-				//Update photoURL.
+				//UPDATE photoURL for the profile.
 				const data = await uploadStorageImageGetData(profileIMGUPLOAD[0], "profilePics");
 				initEditData.photoURL = data.url;
 
-				//For updating local user. Used on layout and such for quick access :)
+				//UPDATE PROFILE PICTURE FOR FIREBASE INBUILT USER (LOCALE).
 				await updateProfile($user, { photoURL: data.url });
 			}
 		}
+		//UPDATE PROFILE USERNAME FOR FIREBASE INBUILT USER (LOCALE).
 		await updateProfile($user, { displayName: initEditData.username });
 
-		//For viewing by other profiles.
+		//UPDATE PROFILE INFO FOR FIREBASE PROFILE DOCUMENT. (USABLE BY OTHER USERS).
 		await updateFirestoreDocument("profiles", `${data.slug}`, {
 			status: `${initEditData.status}`,
 			username: `${initEditData.username}`,
@@ -51,8 +55,11 @@
 	<!--* THIS IS THE USER DETAILS SIDE. -->
 	<!--* Check if own profile. If own -> we allow edits to profile data -->
 	<div class="bg-base-200 shadow-xl rounded-3xl flex flex-col justify-start items-center gap-8 py-20 p-8 text-center">
+		<!--PROFILE PIC, NAME AND STATUS. (DIfferent sizing and such -> design choice.)-->
 		<div class="w-3/4 flex flex-col justify-center items-center gap-2">
+			<!--IF WE ARE NOT EDITING THIS USER-->
 			{#if !editingProfile}
+				<!--IF THE USER EXIST WE SHOW IT'S PROFILE PIC, NAME AND STATUS.-->
 				{#if $profile}
 					<img
 						src={$profile?.photoURL}
@@ -63,6 +70,7 @@
 					<h2 class="text-2xl font-bold">{$profile?.username}</h2>
 					<span class="text-xl italic">{$profile?.status}</span>
 				{:else}
+					<!--IF THE USER DOESN'T EXIST WE SHOW IT TO THE USER.-->
 					<img
 						src="/CompanyLogo/Logo.png"
 						alt="Default profile pic"
@@ -72,8 +80,9 @@
 					<h2 class="text-2xl font-bold">User does not exist.</h2>
 					<span class="text-xl italic">🛑 Please select a correct user!</span>
 				{/if}
+				<!--IF WE ARE EDITING THIS USER. ALLOW FOR UPDATING OF PROFILE.-->
 			{:else}
-				<div class="flex flex-col gap-4">
+				<form class="flex flex-col gap-4">
 					<div class="flex flex-row gap-4 justify-center items-center">
 						<img
 							src={$profile?.photoURL}
@@ -108,23 +117,29 @@
 						maxlength="50"
 						bind:value={initEditData.status}
 					/>
-				</div>
+				</form>
 			{/if}
 		</div>
+		<!--DESCRIPTION AND CONTACT INFORMATION. -->
 		<div class="flex flex-col gap-2">
+			<!--BIOGRAPHY TEXT WITH BIOGRAPHY ICON-->
 			<div class="flex flex-row gap-2 items-center justify-center">
 				<img src="../Icons/text.svg" height="24px" width="24px" alt="Text icon" />
 				<h3>Biography:</h3>
 			</div>
+			<!--IF NOT EDITING PROFILE-->
 			{#if !editingProfile}
+				<!--IF USER EXIST-->
 				{#if $profile}
 					<p class="text-sm">{$profile?.biography}</p>
 				{:else}
+					<!--IF USER DOESN'T EXIST-->
 					<p class="text-sm">
 						You need to choose a correct user id to get to a profile. To go to your profile, sign in, use
 						the top right icon and drop down list for your profile.
 					</p>
 				{/if}
+				<!--CHANGABLE IF EDITING.-->
 			{:else}
 				<textarea
 					class="textarea textarea-lg textarea-ghost h-52 max-h-52 text-sm placeholder:text-sm placeholder:text-center"
@@ -133,19 +148,22 @@
 					bind:value={initEditData.biography}
 				/>
 			{/if}
-		</div>
-		<div class="flex flex-col gap-2">
+			<!--CONTACT TEXT WITH CONTACT ICON-->
 			<div class="flex flex-row gap-2 items-center justify-center">
 				<img src="../Icons/contact.svg" height="24px" width="24px" alt="Contact icon" />
 				<h3>Contact:</h3>
 			</div>
 			<div>
+				<!--IF NOT EDITING PROFILE-->
 				{#if !editingProfile}
+					<!--PROFILE EXISTS-->
 					{#if $profile}
 						<span class="text-sm">{$profile?.contact}</span>
+						<!--PROFILE DOESN'T EXIST-->
 					{:else}
 						<span class="text-sm">loremipsum@dolor.com</span>
 					{/if}
+					<!--CHANGABLE IF EDITING.-->
 				{:else}
 					<input
 						type="text"
@@ -157,7 +175,9 @@
 				{/if}
 			</div>
 		</div>
+		<!-- IF THIS IS OUR OWN PROFILE, WE CAN EDIT THE PROFILE.-->
 		{#if $user?.uid == data.slug}
+			<!--IF WE AREN'T EDITING BUTTON SHOWS WE CAN DO SO.-->
 			{#if !editingProfile}
 				<button
 					class="btn btn-accent"
@@ -173,6 +193,7 @@
 					}}>Edit profile</button
 				>
 			{:else}
+				<!--IF WE ARE EDITING WE CAN SAVE EDITS. -->
 				<button
 					class="btn btn-accent"
 					on:click={async () => {
@@ -183,12 +204,16 @@
 			{/if}
 		{/if}
 	</div>
+
 	<!--* DISPLAY THE USER'S PUBLISHED POSTS. -->
+	<!--IF USER LOADED -> FIND USER POSTS.-->
 	{#if $profile}
+		<!--IF NO POSTS HAS BEEN CREATED BY USER. -->
 		{#if $profile?.posts.length == 0}
 			<div class="flex justify-center items-center">
 				<h2 class="text-2xl font-bold">No posts published by user.</h2>
 			</div>
+			<!--IF USER EXISTS LOAD POSTS-->
 		{:else}
 			<div class="grid auto-rows-[35rem] gap-4" style="grid-template-columns: repeat(auto-fill, 23rem);">
 				{#each $profile?.posts as postID, index (postID + index)}
@@ -197,6 +222,7 @@
 			</div>
 		{/if}
 	{:else}
+		<!--IF USER NOT LOADED YET. -->
 		<div class="flex justify-center items-center">
 			<h2 class="text-2xl font-bold">Reading profile data...</h2>
 		</div>

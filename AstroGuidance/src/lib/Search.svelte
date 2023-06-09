@@ -3,26 +3,21 @@
 	import { dbFireStore } from ".././firebase";
 	let postsBasicInfo = docNameIDRefCollectionStore(dbFireStore, "posts");
 
-	//Function uses basic levenhstein distance search.
-	function search(inputArray, searchString) {
-		return inputArray.filter((item) => item.title.toLowerCase().includes(searchString.trim().toLowerCase()));
+	//Function uses basic includes search, searches the post's title.
+	function search(postArray, searchString) {
+		return postArray.filter((item) => item.title.toLowerCase().includes(searchString.trim().toLowerCase()));
 	}
 
 	let searchQuery = "";
 	$: searchResults = search($postsBasicInfo, searchQuery);
 </script>
 
-<div class="w-64">
-	<div class="form-control relative">
-		<div class="input-group">
-			<input type="text" class="input input-bordered" placeholder="Search…" bind:value={searchQuery} />
-			<button class="btn btn-square">
-				<img src="/Icons/search.svg" alt="Search icon" width="24px" height="24px" style="margin:0 !important" />
-			</button>
-		</div>
+<form class="w-64">
+	<div class="form-control relative w-full">
+		<input type="text" class="input input-bordered w-full" placeholder="Search…" bind:value={searchQuery} />
 		{#if searchResults.length > 0 && searchQuery.length > 0}
 			<div
-				class="shadow bg-base-100 rounded-box p-2 rounded flex flex-col gap-2 absolute top-14 w-64 box-content overflow-y-auto max-h-48"
+				class="w-full shadow bg-base-100 rounded-box p-2 rounded flex flex-col gap-2 absolute top-14 box-content overflow-y-auto max-h-48"
 			>
 				{#each searchResults as result (result.id)}
 					<a
@@ -34,4 +29,4 @@
 			</div>
 		{/if}
 	</div>
-</div>
+</form>

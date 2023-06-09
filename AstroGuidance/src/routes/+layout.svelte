@@ -37,7 +37,7 @@
 <!--HEADER-->
 <header class="sticky top-0 z-50">
 	<div class="navbar bg-base-100 flex-row flex gap-2 border-b-accent border-b-[3px]">
-		<!--WEBSITE LOGO AND MAIN PAGE BUTTOn. -->
+		<!--WEBSITE LOGO AND MAIN PAGE BUTTON. -->
 		<div class="flex-1">
 			<a class="btn btn-ghost flex flex-row gap-2" href="/">
 				<img src="/CompanyLogo/Logo.png" width="32px" height="32px" class="rounded-full" alt="Company Logo " />
@@ -110,14 +110,14 @@
 		<a class="link link-hover" href="/terms">Terms & Conditions</a>
 		<a class="link link-hover" href="/privacy">Privacy policy</a>
 	</div>
-	<!-- Little form for subscribing to website newsletter. -->
-	<div>
+	<!-- FORM FOR SUBSCRIBING TO EMAIL NEWSLETTER-->
+	<form>
 		<span class="footer-title">Newsletter</span>
 		<div class="form-control w-80">
 			<label class="label" for="email">
 				<span class="label-text">Enter your email address</span>
 			</label>
-			<!-- Simple button.  -->
+			<!-- INPUT FOR SUBSCRIBING.  -->
 			<div class="relative">
 				<input
 					type="text"
@@ -135,7 +135,7 @@
 				>
 			</div>
 		</div>
-	</div>
+	</form>
 </footer>
 
 <!-- Website title. -->
@@ -143,6 +143,7 @@
 
 <!-- NOTIFICATION ALERT. -->
 <div class="alert alert-info {$currentNotification?.show ? '' : 'hidden'} fixed bottom-5 right-5 w-1/3">
+	<!--NOTIFICATION SVG-->
 	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"
 		><path
 			stroke-linecap="round"
@@ -151,11 +152,12 @@
 			d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 		/></svg
 	>
+	<!--NOTIFICATION CONTENT-->
 	<span>{$currentNotification?.not}</span>
 </div>
 
 <!-- 
-    Holy Grail - CSS Layout.
+    HOLY-GRAIL-ESQUE CSS LAYOUT
 -->
 <style>
 	:global(body) {

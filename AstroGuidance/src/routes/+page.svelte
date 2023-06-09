@@ -30,7 +30,7 @@
 			</div>
 			<img src="CompanyLogo/Logo.png" class="rounded-lg" width="200px" height="200px" alt="AstroGuidance logo." />
 		</div>
-		<!-- Wave on the bottom of hero.-->
+		<!-- WAVE ON BOTTOM OF THE HERO.-->
 		<div class="absolute bottom-0 left-0 w-full overflow-hidden rotate-180 leading-[0rem]">
 			<svg
 				data-name="Layer 1"
@@ -51,12 +51,13 @@
 		<h2 class="font-bold text-5xl">Top Posts.</h2>
 		<!-- POSTS.-->
 		<div class="flex items-center justify-center gap-20 flex-wrap">
-			<!--while loading posts-->
+			<!--While loading posts-->
 			{#await retrievePosts()}
 				<h2 class="text-xl font-bold italic my-20">Loading trending posts...</h2>
 				<!-- When retrieved posts we render each post as a div.-->
 			{:then posts}
 				{#each posts as post, i}
+					<!--STATIC-ESQUE POST CARD, DIFFERENT FROM POST.SVELTE COMPONENT-->
 					<div class="card w-96 bg-base-300 rounded-2xl shadow-xl relative h-[35rem]">
 						<div class="card-body flex flex-col justify-between gap-4 text-center">
 							<h2 class="card-title font-bold text-3xl truncate h-8">
@@ -104,6 +105,7 @@
 		<h2 class="font-bold text-4xl">About AstroGuidance.</h2>
 		<!-- A list of different rectangles which shows information about the site.-->
 		<div class="gap-16 flex items-center justify-center gap-20 flex-wrap">
+			<!--FORUM-WEBSITE INFO-->
 			<div class="card bg-base-100 w-full sm:w-96 shadow-xl">
 				<div class="card-body items-center text-center">
 					<img src="Icons/forumNotepad.svg" height="128px" width="128px" alt="A minimalistic notepad." />
@@ -114,6 +116,7 @@
 					</p>
 				</div>
 			</div>
+			<!--SCIENCE BASED INFO.-->
 			<div class="card bg-base-100 w-full sm:w-96 shadow-xl">
 				<div class="card-body items-center text-center">
 					<img src="Icons/astronomyPlanet.svg" height="128px" width="128px" alt="A planet with rings." />
@@ -124,6 +127,7 @@
 					</p>
 				</div>
 			</div>
+			<!--CLIMATE FRIENDLY INFO. -->
 			<div class="card bg-base-100 w-full sm:w-96 shadow-xl">
 				<div class="card-body items-center text-center">
 					<img src="Icons/recycle.svg" height="128px" width="128px" alt="Recycling icon." />

@@ -12,8 +12,7 @@
 	let files;
 	let fileObjects = [];
 
-	//Load local images for preview.
-	//Function to handle file selection
+	//LOAD LOCALE IMAGES FOR MEDIAGALLERY PREVIEW.
 	function handleFileSelection(event) {
 		// Update the files array with selected files
 		files = Array.from(event.target.files);
@@ -24,6 +23,7 @@
 		}));
 	}
 
+	//UPLOAD POST
 	async function createPost() {
 		/*
 			Create the post. 
@@ -62,40 +62,46 @@
 			elements: filesData,
 		};
 		console.log("Publishing post.");
+		//UPDATE AUTHOR'S CREATED POST ARRAY FOR DIRECT LINKING.
 		await setFirestoreDocument("posts", `${postID}`, data);
-		//We update the author's data such that the post and the author is directly linked.
 		console.log("Updating author doc.");
+		//IF FIRST POST, POSTS FIELD MAY BE UNDEFINED WE CHECK FOR THIS, MOST LIKELY FIRST POST.
 		if (typeof $userData?.posts == "undefined" || typeof $userData?.posts == "null") {
-			//If first post by author the posts field may be undefined, we define it.
 			await updateFirestoreDocument("profiles", `${$user?.uid}`, { posts: [`${postID}`] });
 		} else {
-			//If not first post by author then we just add onto it.
+			//IF FIELD EXISTS WE EXTEND ON IT.
 			await updateFirestoreDocument("profiles", `${$user?.uid}`, {
 				posts: [...$userData?.posts, `${postID}`],
 			});
 		}
-		//Reroute the user to the post.
+		//REROUTE USER TO THE POST CREATED.
 		goto(`/forum/post/${postID}`);
 	}
 </script>
 
 <main class="flex flex-col w-full lg:flex-row justify-center items-center p-6">
+	<!-- POST MEDIA ELEMENTS PREVIEW.-->
 	<div class="w-1/2 flex flex-col justify-center items-center gap-10 bg-base-300 p-6 rounded-box">
 		<h2 class="text-4xl font-bold">Preview Media.</h2>
 		<div class="carousel rounded-lg border-primary border-2 shadow-xl aspect-square max-w-[66%] bg-black">
+			<!--IF NO MEDIA ELEMENTS HAVE BEEN UPLOADED WE SHOW DEFAULT IMAGE.-->
 			{#if !files}
 				<MediaGallery
 					elements={[{ url: "/CompanyLogo/Logo.png", filetype: "image", title: "Company Logo" }]}
 					postID={"newpost"}
 				/>
 			{:else}
+				<!--IF MEDIA ELEMENTS HAVE BEEN UPLOADED WE SHOW THEM. -->
 				<MediaGallery elements={fileObjects} postID={"newpost"} />
 			{/if}
 		</div>
 	</div>
+	<!--LINE SPLITTING THE PARTS.-->
 	<div class="divider lg:divider-horizontal" />
+	<!--POST DETAILS UPLOADING. -->
 	<div class="w-1/2 flex flex-col justify-center items-center gap-3 bg-base-300 p-6 rounded-box">
 		<h2 class="text-4xl font-bold">Post Details.</h2>
+		<!--UPLOAD POST TITLE-->
 		<label for="title" class="text-3xl font-bold">Title</label>
 		<input
 			type="text"
@@ -105,6 +111,7 @@
 			name="title"
 			bind:value={title}
 		/>
+		<!--UPLOAD POST DESCRIPTION-->
 		<label for="description" class="text-3xl font-bold">Description</label>
 		<textarea
 			placeholder="Description"
@@ -116,6 +123,7 @@
 			name="description"
 			bind:value={description}
 		/>
+		<!--UPLOAD MEDIA ELEMENTS (TRICK: PRETTY UPLOAD BUTTON)-->
 		<div>
 			<label for="elements" class="btn btn-primary">UPLOAD ELEMENTS</label>
 			<input
@@ -128,10 +136,13 @@
 				bind:files
 			/>
 		</div>
+		<!--ADD DESCRIPTIONS TO EACH MEDIA ELEMENT (UNIVERSAL DESIGN). -->
 		{#if files}
 			<div class="flex flex-wrap flex-row gap-2 justify-center items-center">
 				{#each files as element, i}
+					<!--MEDIA ELEMENT DESCRIPTION CARD.-->
 					<section class="card lg:card-side bg-base-100 shadow-xl relative">
+						<!--DROPDOWN DESCRIPTION OF WHY WE WANT A DESCRIPTION (TRICK: PRETTY BUTTON DROPDOWN TRICK)-->
 						<div class="dropdown dropdown-end absolute top-2 right-2">
 							<label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
 								<svg
@@ -157,6 +168,8 @@
 								</div>
 							</div>
 						</div>
+
+						<!--CHOOSE THE DESCRIPTION FOR THE ELEMENT.-->
 						<div class="card-body">
 							<label for={`file${i}`}>Choose Media Description</label>
 							<input
@@ -172,6 +185,7 @@
 				{/each}
 			</div>
 		{/if}
+		<!--UPLOAD THE POST-->
 		<button class="btn btn-primary" on:click={createPost}>UPLOAD POST</button>
 	</div>
 </main>

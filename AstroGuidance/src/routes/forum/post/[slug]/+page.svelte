@@ -43,13 +43,15 @@
 			{#if $postData}
 				<section class="p-4 rounded-lg bg-neutral max-h-[30vh] overflow-scroll flex-1 flex flex-col gap-3">
 					<!--IF NO COMMENTS -->
+					<!--IF COMMENTS FIELD DOESN'T EXIST -> NO COMMENTS -->
 					{#if $postData?.comments == undefined || $postData?.comments == null}
 						<span class="font-bold text-xl">No comments posted.</span>
+						<!--IF COMMENTS FIELD EXISTS BUT IS EMPTY -> NO COMMENTS (HAS TO BE CHECKED AFTERWARDS AS IF postData.comments IS UNDEFINED WE GET ERROR)-->
 					{:else if $postData?.comments.length == 0}
-						<!-- Has to be checked afterwards because we cannot read length of undefined.-->
 						<span class="font-bold text-xl">No comments posted.</span>
 						<!-- IF COMMENTS EXIST. -->
 					{:else}
+						<!--SHOW EACH COMMENT-->
 						{#each $postData?.comments.sort((a, b) => b.commentTime - a.commentTime) as curComment (data.slug + curComment.commentAuthorID + curComment.commentTime)}
 							<Comment
 								commentAuthorID={curComment.commentAuthorID}
@@ -65,9 +67,10 @@
 		</div>
 		<!-- POST NEW COMMENT-->
 		{#if $user}
-			<div class="flex flex-col gap-2 text-center">
+			<form class="flex flex-col gap-2 text-center">
 				<label for="publishComment" class="text-2xl font-bold">Post Comment:</label>
 				<div class="flex flex-row gap-2 items-center flex-1">
+					<!--NEW COMMENT TEXT-->
 					<textarea
 						class="textarea textarea-lg textarea-accent flex-1 max-h-44 min-h-[7rem]"
 						placeholder="Comment..."
@@ -77,6 +80,7 @@
 						bind:value={postCommentData}
 					/>
 					<div class="divider lg:divider-horizontal" />
+					<!--POST NEW COMMENT BUTTON-->
 					<button
 						class="btn btn-accent"
 						on:click={() => {
@@ -84,13 +88,13 @@
 						}}>Upload</button
 					>
 				</div>
-			</div>
+			</form>
 		{/if}
 	</div>
 
 	<!--POST DETAILS AND STATISTICS-->
 	<div class="flex flex-row justify-evenly items-center">
-		<!--AUTHOR OF POST-->
+		<!--AUTHOR OF POST DETAILS-->
 		<a
 			href="/profile/{$postData?.authorID}"
 			class="p-1 btn-ghost flex flex-row gap-3 justify-center items-center rounded-md"

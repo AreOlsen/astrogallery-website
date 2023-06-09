@@ -1,4 +1,5 @@
 <main class="flex flex-col gap-2 justify-center items-center">
+	<!--HERO INFO. -->
 	<section
 		class="flex flex-col gap-1 justify-center items-center min-h-screen box-content w-full bg-[url('/AboutUsBackground/moon.jpg')] bg-center bg-cover"
 	>
@@ -18,6 +19,7 @@
 			<span>Learn More</span>
 		</a>
 	</section>
+	<!--WHO ARE WE INFO. -->
 	<section
 		id="section_1"
 		class="flex flex-row flex-wrap gap-2 justify-evenly items-center min-h-[75vh] box-content p-4"
@@ -35,6 +37,7 @@
 		</div>
 		<img src="/AboutUsBackground/developers.jpg" class="w-1/4 rounded-md" alt="The forum developers." />
 	</section>
+	<!--WHAT YOU WILL FIND ON THIS WEBSITE INFO. -->
 	<section
 		id="section_2"
 		class="flex flex-row flex-wrap gap-2 justify-evenly items-center min-h-[75vh] box-content p-4 bg-base-200"
@@ -50,6 +53,7 @@
 			</p>
 		</div>
 	</section>
+	<!--SOCIAL EVENTS AND COMMUNITY SERVICES INFO. -->
 	<section
 		id="section_3"
 		class="flex flex-row flex-wrap gap-2 justify-evenly items-center min-h-[75vh] box-content p-4"

@@ -15,6 +15,7 @@
 			class="m-6 min-h-full grid gap-6 auto-rows-[35rem]"
 			style="grid-template-columns: repeat(auto-fill, 23rem);"
 		>
+			<!--SHOW EACH POST-->
 			{#each $posts as post (post.id)}
 				<Post onProfile={false} postID={post.id} />
 			{/each}
