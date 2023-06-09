@@ -23,13 +23,13 @@
 		<!--Post Elements. -->
 		{#if $postData?.elements}
 			{#if $postData?.elements.length !== 0}
-				<div class="carousel rounded-lg shadow-xl aspect-square max-h-[50vh] bg-black">
+				<div class="carousel rounded-lg shadow-xl aspect-square max-h-[50vh] bg-black w-1/2">
 					<MediaGallery elements={$postData?.elements} postID={data.slug} />
 				</div>
 			{/if}
 		{/if}
 		<!--Description of post.-->
-		<div class="flex flex-col text-center">
+		<div class="flex flex-col text-center w-1/2">
 			<h3 class="text-2xl font-bold">Description:</h3>
 			<section>
 				<p class="text-center">{$postData?.description}</p>

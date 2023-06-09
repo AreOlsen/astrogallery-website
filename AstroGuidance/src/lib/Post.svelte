@@ -18,7 +18,9 @@
 <article
 	class="bg-base-300 flex flex-col items-center justify-evenly gap-2 rounded-lg shadow-2xl text-center relative p-10 py-4 pb-24"
 >
+	<!--TITLE OF POST-->
 	<h1 class="font-bold text-4xl break-words max-w-full h-12 truncate">{$postData?.title.slice(0, 25)}</h1>
+	<!--FRONT IMAGE/VIDEO OF POST-->
 	{#if $postData?.elements}
 		{#if $postData?.elements.length !== 0}
 			{#if $postData?.elements[0].filetype == "image" && $postData?.elements[0].url.length != 0}
@@ -36,8 +38,9 @@
 			{/if}
 		{/if}
 	{/if}
-
+	<!--DESCRIPTION-->
 	<p class="break-words max-w-full h-24 truncate">{$postData?.description.slice(0, 50)}</p>
+	<!--LIKE POST-->
 	<button
 		class="btn bg-base-300 rounded-lg flex flex-row gap-2 absolute right-5 bottom-5 {likedPost == true
 			? 'bg-primary text-white'
@@ -54,7 +57,6 @@
 </article>
 
 <!-- POST MODAL  -->
-
 <input type="checkbox" id="{postID}modal" class="modal-toggle" />
 <div class="modal">
 	<div class="modal-box max-w-5xl relative p-7 pb-20 flex flex-col gap-6">
@@ -63,12 +65,12 @@
 		<div class="flex flex-row gap-4 justify-evenly">
 			{#if $postData?.elements}
 				{#if $postData?.elements.length !== 0}
-					<div class="carousel rounded-lg shadow-xl aspect-square max-h-[50vh] bg-black">
+					<div class="carousel rounded-lg shadow-xl aspect-square max-h-[50vh] bg-black w-1/2">
 						<MediaGallery elements={$postData?.elements} {postID} />
 					</div>
 				{/if}
 			{/if}
-			<div class="flex flex-col text-center">
+			<div class="flex flex-col text-center w-1/2">
 				<h3 class="text-2xl font-bold">Description:</h3>
 				<section>
 					<p class="text-center">{$postData?.description}</p>
