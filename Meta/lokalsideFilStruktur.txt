@@ -1,0 +1,104 @@
+├── AstroGuidance
+│   ├── LICENSE
+│   ├── README.md
+│   ├── database.rules.json
+│   ├── firebase.json
+│   ├── firestore.indexes.json
+│   ├── firestore.rules
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.cjs
+│   ├── src
+│   │   ├── app.css
+│   │   ├── app.html
+│   │   ├── firebase.js
+│   │   ├── lib
+│   │   │   ├── Comment.svelte
+│   │   │   ├── MediaGallery.svelte
+│   │   │   ├── Post.svelte
+│   │   │   ├── alertStore.ts
+│   │   │   ├── authStore.ts
+│   │   │   ├── docCollectionStore.ts
+│   │   │   ├── emailSub.js
+│   │   │   ├── postHandling.js
+│   │   │   └── updateSetDoc.js
+│   │   └── routes
+│   │       ├── +error.svelte
+│   │       ├── +layout.svelte
+│   │       ├── +page.server.js
+│   │       ├── +page.svelte
+│   │       ├── aboutus
+│   │       │   └── +page.svelte
+│   │       ├── api
+│   │       │   ├── getPostStatic
+│   │       │   │   └── +server.js
+│   │       │   └── getPostsStatic
+│   │       │       └── +server.js
+│   │       ├── forum
+│   │       │   ├── +page.svelte
+│   │       │   └── post
+│   │       │       └── [slug]
+│   │       │           ├── +page.js
+│   │       │           └── +page.svelte
+│   │       ├── newpost
+│   │       │   └── +page.svelte
+│   │       ├── privacy
+│   │       │   └── +page.svelte
+│   │       ├── profile
+│   │       │   └── [slug]
+│   │       │       ├── +page.js
+│   │       │       └── +page.svelte
+│   │       └── terms
+│   │           └── +page.svelte
+│   ├── static
+│   │   ├── AboutUsBackground
+│   │   │   ├── developers.jpg
+│   │   │   ├── event.jpg
+│   │   │   ├── moon.jpg
+│   │   │   ├── outerspace.jpg
+│   │   │   └── research.jpg
+│   │   ├── CompanyLogo
+│   │   │   └── Logo.png
+│   │   ├── HomeBackground
+│   │   │   ├── Backgrounds
+│   │   │   │   └── Nebula.jpg
+│   │   │   └── Hero
+│   │   │       ├── Astronaut.jpg
+│   │   │       ├── Astronaut2.jpg
+│   │   │       ├── Astronaut3.jpg
+│   │   │       ├── Earth.jpg
+│   │   │       ├── Earth2.jpg
+│   │   │       ├── Launch.jpg
+│   │   │       ├── Launch2.jpg
+│   │   │       ├── Launch3.jpg
+│   │   │       ├── Launch4.jpg
+│   │   │       ├── Launch5.jpg
+│   │   │       ├── Launch6.jpg
+│   │   │       ├── Launch7.jpg
+│   │   │       ├── Meeting.jpg
+│   │   │       ├── Moon.jpg
+│   │   │       ├── Moon2.jpg
+│   │   │       ├── Moon3.jpg
+│   │   │       ├── Moon4.jpg
+│   │   │       ├── NorthernLights.jpg
+│   │   │       ├── SpaceStation.jpg
+│   │   │       ├── USA.jpg
+│   │   │       └── Window.jpg
+│   │   ├── Icons
+│   │   │   ├── arrowDownwards.svg
+│   │   │   ├── astronomyPlanet.svg
+│   │   │   ├── comments.svg
+│   │   │   ├── contact.svg
+│   │   │   ├── forumNotepad.svg
+│   │   │   ├── heart.svg
+│   │   │   ├── recycle.svg
+│   │   │   ├── search.svg
+│   │   │   └── text.svg
+│   │   └── Socials
+│   │       ├── instagram.svg
+│   │       ├── twitter.svg
+│   │       └── youtube.svg
+│   ├── svelte.config.js
+│   ├── tailwind.config.cjs
+│   └── vite.config.js
+└── README.md

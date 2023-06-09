@@ -1,0 +1,13 @@
+├── AstroGuidance
+│   ├── Newsletter
+│   │   └──subscribedEmails
+│   ├── Posts
+│   │   ├── post1
+│   │   ├── post2
+│   │   ├── post3
+│   │   ├── postN
+│   ├── Profile
+│   │   ├── user1
+│   │   ├── user2
+│   │   ├── user3
+│   │   ├── userN
