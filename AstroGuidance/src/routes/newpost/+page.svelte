@@ -5,6 +5,7 @@
 	import { userStore } from "$lib/authStore.ts";
 	import { docStore } from "$lib/docCollectionStore.ts";
 	import { setFirestoreDocument, uploadStorageImageGetData, updateFirestoreDocument } from "$lib/updateSetDoc.js";
+	import { updateNotification } from "$lib/alertStore.ts";
 	let user = userStore(auth);
 	let userData = docStore(dbFireStore, `profiles/${$user?.uid}`);
 	let title = "";
@@ -36,7 +37,8 @@
 		*/
 		if (files) {
 			if (files.length !== 0) {
-				console.log("Uploading files.");
+				console.log("Uploading files...");
+				updateNotification("Uploading media elements.");
 				for (let i = 0; i < files.length; i++) {
 					let dataBack = await uploadStorageImageGetData(files[i], "postsImages");
 					filesData[i] = {
@@ -61,6 +63,7 @@
 			id: postID,
 			elements: filesData,
 		};
+		updateNotification("Sharing post to the world...");
 		console.log("Publishing post.");
 		//UPDATE AUTHOR'S CREATED POST ARRAY FOR DIRECT LINKING.
 		await setFirestoreDocument("posts", `${postID}`, data);
@@ -74,6 +77,7 @@
 				posts: [...$userData?.posts, `${postID}`],
 			});
 		}
+		updateNotification("Redirecting to post...");
 		//REROUTE USER TO THE POST CREATED.
 		goto(`/forum/post/${postID}`);
 	}
