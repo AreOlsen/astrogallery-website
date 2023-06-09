@@ -54,7 +54,9 @@
 <main class="grid gap-10 grid-rows-1 w-full min-h-screen p-10" style="grid-template-columns:3fr 9fr;">
 	<!--* THIS IS THE USER DETAILS SIDE. -->
 	<!--* Check if own profile. If own -> we allow edits to profile data -->
-	<div class="bg-base-200 shadow-xl rounded-3xl flex flex-col justify-start items-center gap-8 py-20 p-8 text-center">
+	<div
+		class="bg-base-200 shadow-xl rounded-3xl flex flex-col justify-start items-center gap-11 py-20 p-8 text-center"
+	>
 		<!--PROFILE PIC, NAME AND STATUS. (DIfferent sizing and such -> design choice.)-->
 		<div class="w-3/4 flex flex-col justify-center items-center gap-2">
 			<!--IF WE ARE NOT EDITING THIS USER-->

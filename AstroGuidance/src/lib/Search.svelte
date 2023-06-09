@@ -27,7 +27,7 @@
 				{#each searchResults as result (result.id)}
 					<a
 						href="/forum/post/{result.id}"
-						class="block btn border-accent border-[1px] rounded-md p-2 shadow-xl flex justify-center items-center w-64"
+						class="block btn border-accent border-[1px] rounded-md p-2 shadow-xl flex justify-center items-center w-64 text-white"
 						>{result.title}</a
 					>
 				{/each}
