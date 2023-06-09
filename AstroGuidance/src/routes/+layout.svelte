@@ -98,17 +98,17 @@
 	<!--FOOTER NAVIGATION LINKS-->
 	<div>
 		<span class="footer-title">Navigation</span>
-		<a class="link link-hover" href="/">Homepage</a>
-		<a class="link link-hover" href="/forum">Forum</a>
+		<a class="link link-hover p-2" href="/">Homepage</a>
+		<a class="link link-hover p-2" href="/forum">Forum</a>
 		<!--We only show the profile link if we are logged in.-->
-		{#if $user != null}<a class="link link-hover" href="/profile/{$user?.uid}">Profile</a>{/if}
-		<a class="link link-hover" href="/aboutus">About us</a>
+		{#if $user != null}<a class="link link-hover p-2" href="/profile/{$user?.uid}">Profile</a>{/if}
+		<a class="link link-hover p-2" href="/aboutus">About us</a>
 	</div>
 	<!-- FOOTER LEGAL NAVIGATION LINKS-->
 	<div>
 		<span class="footer-title">Legals</span>
-		<a class="link link-hover" href="/terms">Terms & Conditions</a>
-		<a class="link link-hover" href="/privacy">Privacy policy</a>
+		<a class="link link-hover p-2" href="/terms">Terms & Conditions</a>
+		<a class="link link-hover p-2" href="/privacy">Privacy policy</a>
 	</div>
 	<!-- FORM FOR SUBSCRIBING TO EMAIL NEWSLETTER-->
 	<form>
@@ -124,7 +124,7 @@
 					id="email"
 					name="email"
 					placeholder="username@site.com"
-					class="input input-bordered w-full pr-16"
+					class="input input-bordered w-full pr-16 border-accent"
 					bind:value={subscribeNewsletterEmail}
 				/>
 				<button
