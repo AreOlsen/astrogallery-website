@@ -134,7 +134,7 @@
 					<h2 class="card-title">Climate Friendly!</h2>
 					<p>
 						Our services are 100% run on green energy, and some of our profits go directly into helping the
-						climate.
+						climate, through planting new trees and capturing carbon!
 					</p>
 				</div>
 			</div>
