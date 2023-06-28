@@ -19,7 +19,7 @@
 	"type": "module",
 	"dependencies": {
 		"@builder.io/partytown": "^0.7.5",
-		"@sveltejs/adapter-static": "^2.0.1",
+		"@sveltejs/adapter-static": "^2.0.2",
 		"@sveltejs/adapter-vercel": "^3.0.0",
 		"@tailwindcss/typography": "github:tailwindcss/typography",
 		"daisyui": "^2.51.3",
