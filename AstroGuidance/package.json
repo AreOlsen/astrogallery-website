@@ -18,7 +18,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@builder.io/partytown": "^0.7.5",
+		"@builder.io/partytown": "^0.8.0",
 		"@sveltejs/adapter-static": "^2.0.1",
 		"@sveltejs/adapter-vercel": "^3.0.0",
 		"@tailwindcss/typography": "github:tailwindcss/typography",
