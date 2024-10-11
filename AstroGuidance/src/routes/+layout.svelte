@@ -93,7 +93,7 @@
 		<h2 class="font-bold text-xl">AstroGuidance.</h2>
 		<br />
 		<h3 class="italic text-accent text-base">The forum for Astronomers.</h3>
-		<h4 class="opacity-80 text-sm italic text-accent">Hosted & Funded by SpaceX</h4>
+		<h4 class="opacity-80 text-sm italic text-accent">Constructed by AOlsen.X</h4>
 	</div>
 	<!--FOOTER NAVIGATION LINKS-->
 	<div>

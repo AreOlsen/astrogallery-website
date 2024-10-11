@@ -25,7 +25,7 @@
 			<div class="flex flex-col">
 				<h1 class="font-bold text-7xl italic">AstroGuidance</h1>
 				<span class="text-accent italic text-3xl">The forum for astronomers.</span>
-				<span class="italic">Funded & Hosted by SpaceX</span>
+				<span class="italic">Constructed by AOlsen.</span>
 				<a href="/forum" class="btn btn-accent my-6">To The Forum.</a>
 			</div>
 			<img src="CompanyLogo/Logo.png" class="rounded-lg" width="200px" height="200px" alt="AstroGuidance logo." />
