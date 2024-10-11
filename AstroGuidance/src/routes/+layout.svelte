@@ -10,7 +10,7 @@
 	/* 
 		FIREBASE LOGIN & SIGNOUT.
 	*/
-	import { signOut, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+	import { signOut, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 	import { auth } from "../firebase.js";
 	import { userStore } from "$lib/authStore";
 	let user = userStore(auth);
@@ -20,7 +20,7 @@
 	};
 
 	const loginWithGoogle = async () => {
-		signInWithRedirect(auth, new GoogleAuthProvider());
+		signInWithPopup(auth, new GoogleAuthProvider());
 	};
 
 	//EMAIL SUBSCRIPTION

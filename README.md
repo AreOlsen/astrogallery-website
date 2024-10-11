@@ -1,13 +1,2 @@
 # AstroGuidance
-AstronomyGuidance (Previously AstroGallery) is a simple forum for astronomers which users can create delete, post comments, and otherwise interact with eachother.
-This is made for a school project.
-
-
-
-
-The project uses as it's sources:
-Unsplash User Nasa & SpaceX
-Svgrepo 
-Pexels
-
-
+AstronomyGuidance (Previously AstroGallery) is a simple forum for astronomers which users can create delete, post comments, and otherwise interact with eachother. This website has a lot of possible improvements in terms of code management, intuitiveness and organization, cloud access speed, file compression, cloud security, and layout. However, it is to be noted that this website was constructed purely for a school project and was built on a very, very tight time frame. Considering this project is not of huge interest to me there won't be any major further developments, although there are major possible improvements. ~ Aolsen.
